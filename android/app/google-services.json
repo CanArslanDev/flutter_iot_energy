@@ -1,0 +1,39 @@
+{
+  "project_info": {
+    "project_number": "900490141548",
+    "project_id": "energy-e67ed",
+    "storage_bucket": "energy-e67ed.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:900490141548:android:a7e747d17ec215879d1d49",
+        "android_client_info": {
+          "package_name": "com.example.flutter_iot_energy"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "900490141548-2i23g3d9h5j6995i4m5m3d26qvtqq6fk.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyAq5dpULEwZ0xc8q-mDGprW0j7qk7XR3zE"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "900490141548-2i23g3d9h5j6995i4m5m3d26qvtqq6fk.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
