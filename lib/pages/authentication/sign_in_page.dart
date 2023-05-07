@@ -61,131 +61,265 @@ class SignInPage extends GetView<SignInController> {
       barrierColor: Colors.black.withOpacity(0.2),
       transitionDuration: const Duration(milliseconds: 200),
       pageBuilder: (_, __, ___) {
-        return Padding(
-          padding: EdgeInsets.only(bottom: 20.h),
-          child: Align(
-            alignment: Alignment.center,
-            child: Container(
-              height: 55.w,
-              width: 90.w,
-              margin: const EdgeInsets.symmetric(horizontal: 20),
-              padding: EdgeInsets.only(left: 4.w),
-              decoration: BoxDecoration(
-                  color: Theme.of(Get.context!).colorScheme.onBackground,
-                  borderRadius: BorderRadius.circular(4.w)),
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  Padding(
-                    padding: EdgeInsets.only(
-                      top: 4.w,
-                    ),
-                    child: Text(
-                      "Recovery Password",
-                      textAlign: TextAlign.center,
-                      style: GoogleFonts.inter(
-                          decoration: TextDecoration.none,
-                          color: Theme.of(Get.context!)
-                              .colorScheme
-                              .onSecondary
-                              .withOpacity(0.7),
-                          fontSize: 5.5.w,
-                          fontWeight: FontWeight.bold),
-                    ),
-                  ),
-                  Padding(
-                    padding: EdgeInsets.only(
-                      top: 1.w,
-                    ),
-                    child: SizedBox(
-                      width: 80.w,
-                      child: Text(
-                        "If you have forgotten your password, you can reset your password by typing your e-mail address below.",
-                        style: GoogleFonts.inter(
-                          decoration: TextDecoration.none,
-                          color: Theme.of(Get.context!)
-                              .colorScheme
-                              .onSecondary
-                              .withOpacity(0.5),
-                          fontSize: 3.7.w,
+        return Obx(() => Padding(
+              padding: EdgeInsets.only(bottom: 20.h),
+              child: Align(
+                alignment: Alignment.center,
+                child: Container(
+                  height: (controller.recoveryPasswordSended.value == false)
+                      ? 55.w
+                      : 45.w,
+                  width: 90.w,
+                  margin: const EdgeInsets.symmetric(horizontal: 20),
+                  padding: EdgeInsets.only(left: 4.w),
+                  decoration: BoxDecoration(
+                      color: Theme.of(Get.context!).colorScheme.onBackground,
+                      borderRadius: BorderRadius.circular(4.w)),
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      Padding(
+                        padding: EdgeInsets.only(
+                          top: 4.w,
+                        ),
+                        child: Text(
+                          "Recovery Password",
+                          textAlign: TextAlign.center,
+                          style: GoogleFonts.inter(
+                              decoration: TextDecoration.none,
+                              color: Theme.of(Get.context!)
+                                  .colorScheme
+                                  .onSecondary
+                                  .withOpacity(0.7),
+                              fontSize: 5.5.w,
+                              fontWeight: FontWeight.bold),
                         ),
                       ),
-                    ),
-                  ),
-                  Material(
-                    child: Padding(
-                      padding: EdgeInsets.only(top: 1.h),
-                      child: SizedBox(
-                        width: 82.5.w,
-                        child: TextField(
-                          controller: controller.emailFieldController,
-                          maxLines: 1,
-                          decoration: InputDecoration(
-                            contentPadding: EdgeInsets.symmetric(
-                                vertical: 3.5.w, horizontal: 3.w),
-                            isCollapsed: true,
-                            filled: true,
-                            hintText: "Email",
-                            hintStyle: GoogleFonts.inter(
-                                color: Theme.of(Get.context!)
-                                    .colorScheme
-                                    .onSurface,
-                                fontWeight: FontWeight.bold),
-                            fillColor:
-                                Theme.of(Get.context!).colorScheme.onBackground,
-                            enabledBorder: OutlineInputBorder(
-                              borderRadius: BorderRadius.circular(10),
-                              borderSide: BorderSide(
-                                width: 1,
-                                color: Theme.of(Get.context!)
-                                    .colorScheme
-                                    .onTertiary
-                                    .withOpacity(0.3),
-                              ),
+                      Padding(
+                        padding: EdgeInsets.only(
+                          top: 1.w,
+                        ),
+                        child: SizedBox(
+                          width: 80.w,
+                          child: Text(
+                            (controller.recoveryPasswordSended.value == false)
+                                ? "If you have forgotten your password, you can reset your password by typing your e-mail address below."
+                                : "Please check your mail.",
+                            style: GoogleFonts.inter(
+                              decoration: TextDecoration.none,
+                              color: Theme.of(Get.context!)
+                                  .colorScheme
+                                  .onSecondary
+                                  .withOpacity(0.5),
+                              fontSize: 3.7.w,
                             ),
-                            focusedBorder: OutlineInputBorder(
-                              borderRadius: BorderRadius.circular(10),
-                              borderSide: BorderSide(
-                                width: 1,
-                                color: Theme.of(Get.context!)
+                          ),
+                        ),
+                      ),
+                      Material(
+                        child: Padding(
+                          padding: EdgeInsets.only(top: 1.h),
+                          child: SizedBox(
+                            width: 82.5.w,
+                            child: TextField(
+                              controller: controller.dialogEmailFieldController,
+                              maxLines: 1,
+                              decoration: InputDecoration(
+                                contentPadding: EdgeInsets.symmetric(
+                                    vertical: 3.5.w, horizontal: 3.w),
+                                isCollapsed: true,
+                                filled: true,
+                                hintText: "Email",
+                                hintStyle: GoogleFonts.inter(
+                                    color: Theme.of(Get.context!)
+                                        .colorScheme
+                                        .onSurface,
+                                    fontWeight: FontWeight.bold),
+                                fillColor: Theme.of(Get.context!)
                                     .colorScheme
-                                    .onTertiary
-                                    .withOpacity(0.3),
-                              ),
-                            ),
-                            errorBorder: OutlineInputBorder(
-                              borderRadius: BorderRadius.circular(10),
-                              borderSide: BorderSide(
-                                width: 1,
-                                color: Theme.of(Get.context!)
-                                    .colorScheme
-                                    .onTertiary
-                                    .withOpacity(0.3),
-                              ),
-                            ),
-                            border: OutlineInputBorder(
-                              borderRadius: BorderRadius.circular(10),
-                              borderSide: BorderSide(
-                                width: 1,
-                                color: Theme.of(Get.context!)
-                                    .colorScheme
-                                    .onTertiary
-                                    .withOpacity(0.3),
+                                    .onBackground,
+                                enabledBorder: OutlineInputBorder(
+                                  borderRadius: BorderRadius.circular(10),
+                                  borderSide: BorderSide(
+                                    width: 1,
+                                    color: Theme.of(Get.context!)
+                                        .colorScheme
+                                        .onTertiary
+                                        .withOpacity(0.3),
+                                  ),
+                                ),
+                                focusedBorder: OutlineInputBorder(
+                                  borderRadius: BorderRadius.circular(10),
+                                  borderSide: BorderSide(
+                                    width: 1,
+                                    color: Theme.of(Get.context!)
+                                        .colorScheme
+                                        .onTertiary
+                                        .withOpacity(0.3),
+                                  ),
+                                ),
+                                errorBorder: OutlineInputBorder(
+                                  borderRadius: BorderRadius.circular(10),
+                                  borderSide: BorderSide(
+                                    width: 1,
+                                    color: Theme.of(Get.context!)
+                                        .colorScheme
+                                        .onTertiary
+                                        .withOpacity(0.3),
+                                  ),
+                                ),
+                                border: OutlineInputBorder(
+                                  borderRadius: BorderRadius.circular(10),
+                                  borderSide: BorderSide(
+                                    width: 1,
+                                    color: Theme.of(Get.context!)
+                                        .colorScheme
+                                        .onTertiary
+                                        .withOpacity(0.3),
+                                  ),
+                                ),
                               ),
                             ),
                           ),
                         ),
                       ),
-                    ),
+                      Padding(
+                        padding: EdgeInsets.only(top: 2.w, right: 3.2.w),
+                        child: Row(
+                          mainAxisAlignment: MainAxisAlignment.end,
+                          children: [
+                            GestureDetector(
+                              onTap: () => Get.back(),
+                              child: Container(
+                                height: 9.w,
+                                width: 20.w,
+                                decoration: BoxDecoration(
+                                  borderRadius: BorderRadius.circular(8),
+                                  color: Theme.of(Get.context!)
+                                      .colorScheme
+                                      .onSurfaceVariant,
+                                  boxShadow: [
+                                    BoxShadow(
+                                      color: Theme.of(Get.context!)
+                                          .colorScheme
+                                          .onSurfaceVariant
+                                          .withOpacity(0.4),
+                                      spreadRadius: 2,
+                                      blurRadius: 8,
+                                    ),
+                                  ],
+                                ),
+                                child: Center(
+                                  child: DefaultTextStyle(
+                                    style: GoogleFonts.inter(
+                                        color: Theme.of(Get.context!)
+                                            .colorScheme
+                                            .background,
+                                        fontWeight: FontWeight.bold,
+                                        fontSize: 5.w),
+                                    child: Text(
+                                      "Back",
+                                    ),
+                                  ),
+                                ),
+                              ),
+                            ),
+                            SizedBox(
+                              width: 1.5.w,
+                            ),
+                            GestureDetector(
+                              onTap: () {
+                                if (controller.recoveryPasswordSended.value ==
+                                    false) {
+                                  controller.recoveryPassword(controller
+                                      .dialogEmailFieldController.text);
+                                }
+                              },
+                              child: Container(
+                                height: 9.w,
+                                width: 25.w,
+                                decoration: BoxDecoration(
+                                  borderRadius: BorderRadius.circular(8),
+                                  color: (controller
+                                              .recoveryPasswordSended.value ==
+                                          false)
+                                      ? Theme.of(Get.context!)
+                                          .colorScheme
+                                          .primary
+                                      : Theme.of(Get.context!)
+                                          .colorScheme
+                                          .inverseSurface,
+                                  boxShadow: [
+                                    BoxShadow(
+                                      color: (controller.recoveryPasswordSended
+                                                  .value ==
+                                              false)
+                                          ? Theme.of(Get.context!)
+                                              .colorScheme
+                                              .primary
+                                              .withOpacity(0.4)
+                                          : Theme.of(Get.context!)
+                                              .colorScheme
+                                              .inverseSurface
+                                              .withOpacity(0.3),
+                                      spreadRadius: 2,
+                                      blurRadius: 8,
+                                    ),
+                                  ],
+                                ),
+                                child: (controller
+                                            .recoveryPasswordSended.value ==
+                                        false)
+                                    ? Row(
+                                        mainAxisAlignment:
+                                            MainAxisAlignment.center,
+                                        children: [
+                                          DefaultTextStyle(
+                                            style: GoogleFonts.inter(
+                                                color: Theme.of(Get.context!)
+                                                    .colorScheme
+                                                    .background,
+                                                fontWeight: FontWeight.bold,
+                                                fontSize: 5.w),
+                                            child: Text(
+                                              "Send",
+                                            ),
+                                          ),
+                                          SizedBox(
+                                            width: 2.w,
+                                          ),
+                                          Icon(
+                                            FontAwesomeIcons.paperPlane,
+                                            color: Theme.of(Get.context!)
+                                                .colorScheme
+                                                .background,
+                                            size: 5.w,
+                                          )
+                                        ],
+                                      )
+                                    : Center(
+                                        child: DefaultTextStyle(
+                                          style: GoogleFonts.inter(
+                                              color: Theme.of(Get.context!)
+                                                  .colorScheme
+                                                  .background,
+                                              fontWeight: FontWeight.bold,
+                                              fontSize: 5.w),
+                                          child: Text(
+                                            "Sended",
+                                          ),
+                                        ),
+                                      ),
+                              ),
+                            )
+                          ],
+                        ),
+                      )
+                    ],
                   ),
-                  Row(
-                    children: [Container()],
-                  )
-                ],
+                ),
               ),
-            ),
-          ),
-        );
+            ));
       },
       transitionBuilder: (_, anim, __, child) {
         return FadeTransition(

@@ -1,6 +1,7 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter_iot_energy/services/firebase_service.dart';
+import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import 'package:google_sign_in/google_sign_in.dart';
 
 class AuthService {
@@ -16,6 +17,10 @@ class AuthService {
 
   //sign out function
   signOut() async {
+    const storage = FlutterSecureStorage();
+    await storage.delete(key: 'email');
+    await storage.delete(key: 'password');
+    await storage.delete(key: 'auth');
     return await _auth.signOut();
   }
 
@@ -51,7 +56,7 @@ class AuthService {
     return userCredential.user!;
   }
 
-  void resetPasswordEmail(String email) async {
+  Future resetPasswordEmail(String email) async {
     await _auth.sendPasswordResetEmail(email: email);
   }
 }
