@@ -1,4 +1,3 @@
-import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:get/get.dart';
@@ -217,7 +216,7 @@ class SignInPage extends GetView<SignInController> {
                                             .background,
                                         fontWeight: FontWeight.bold,
                                         fontSize: 5.w),
-                                    child: Text(
+                                    child: const Text(
                                       "Back",
                                     ),
                                   ),
@@ -281,7 +280,7 @@ class SignInPage extends GetView<SignInController> {
                                                     .background,
                                                 fontWeight: FontWeight.bold,
                                                 fontSize: 5.w),
-                                            child: Text(
+                                            child: const Text(
                                               "Send",
                                             ),
                                           ),
@@ -305,7 +304,7 @@ class SignInPage extends GetView<SignInController> {
                                                   .background,
                                               fontWeight: FontWeight.bold,
                                               fontSize: 5.w),
-                                          child: Text(
+                                          child: const Text(
                                             "Sended",
                                           ),
                                         ),

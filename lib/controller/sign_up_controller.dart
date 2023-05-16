@@ -1,7 +1,6 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:get/get.dart';
-import 'package:get/get_rx/src/rx_types/rx_types.dart';
 
 import '../routes/routes.dart';
 import '../services/auth_service.dart';
@@ -16,14 +15,7 @@ class SignUpController extends BaseController {
   final passwordAgainFieldController = TextEditingController();
   Rx<bool> passwordHint = true.obs;
   Rx<bool> passwordAgainHint = true.obs;
-  @override
   void signUp() async {
-    print(emailFieldController.text);
-    print(usernameFieldController.text);
-    print(phoneFieldController.text);
-    print(passwordFieldController.text);
-    print(passwordAgainFieldController.text);
-
     if (emailFieldController.text == "" ||
         usernameFieldController.text == "" ||
         phoneFieldController.text == "" ||

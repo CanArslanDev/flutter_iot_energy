@@ -1,9 +1,10 @@
 import 'package:flutter_iot_energy/bindings/main_page_binding.dart';
+import 'package:flutter_iot_energy/bindings/pair_device_page_binding.dart';
 import 'package:flutter_iot_energy/bindings/sign_in_binding.dart';
 import 'package:flutter_iot_energy/bindings/sign_up_binding.dart';
-import 'package:flutter_iot_energy/controller/main_page_controller.dart';
 import 'package:flutter_iot_energy/pages/authentication/sign_in_page.dart';
 import 'package:flutter_iot_energy/pages/authentication/sign_up_page.dart';
+import 'package:flutter_iot_energy/pages/eventPages/pair_device_page.dart';
 import 'package:flutter_iot_energy/pages/main_pages/main_page.dart';
 import 'package:flutter_iot_energy/routes/routes.dart';
 import 'package:get/get_navigation/src/routes/get_route.dart';
@@ -12,15 +13,19 @@ abstract class Pages {
   static List<GetPage> pages = [
     GetPage(
         name: Routes.signInPage,
-        page: () => SignInPage(),
+        page: () => const SignInPage(),
         binding: SignInBinding()),
     GetPage(
         name: Routes.signUpPage,
-        page: () => SignUpPage(),
+        page: () => const SignUpPage(),
         binding: SignUpBinding()),
     GetPage(
         name: Routes.mainPage,
-        page: () => MainPage(),
+        page: () => const MainPage(),
         binding: MainPageBinding()),
+    GetPage(
+        name: Routes.pairDevicePage,
+        page: () => const PairDevicePage(),
+        binding: PairDevicePageBinding()),
   ];
 }

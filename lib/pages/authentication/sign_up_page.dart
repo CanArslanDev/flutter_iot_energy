@@ -9,6 +9,8 @@ import 'package:responsive_sizer/responsive_sizer.dart';
 import '../../controller/sign_up_controller.dart';
 
 class SignUpPage extends GetView<SignUpController> {
+  const SignUpPage({super.key});
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(

@@ -16,7 +16,9 @@ class StorageService {
     await storage.write(key: 'auth', value: 'google');
   }
 
-  getAutomaticSignAuth(VoidCallback callback) async {
+  getAutomaticSignAuth(
+      VoidCallback callback, VoidCallback errorCallback, void widget) async {
+    widget;
     String? auth = await storage.read(key: 'auth');
     if (auth == 'email') {
       try {
@@ -26,13 +28,16 @@ class StorageService {
           callback();
         });
         // ignore: unused_catch_clause
-      } on FirebaseAuthException catch (error) {
+      } catch (error) {
+        errorCallback();
         return null;
       }
     } else if (auth == 'google') {
       await AuthService().signInGoogle().then((value) {
         callback();
       });
+    } else {
+      errorCallback();
     }
   }
 }
