@@ -60,7 +60,16 @@ dev_dependencies:
   # package. See that file for information about deactivating specific lint
   # rules and activating additional ones.
   flutter_lints: ^2.0.0
+  flutter_launcher_icons: "^0.13.1"
 
+flutter_launcher_icons:
+  android: "launcher_icon"
+  ios: true
+  image_path: "assets/icons/iot_energy_icon.png"
+  image_path_android: "assets/icons/iot_energy_icon.png"
+  adaptive_icon_background: "assets/icons/iot_energy_icon_background.png"
+  adaptive_icon_foreground: "assets/icons/iot_energy_icon_foreground.png"
+  min_sdk_android: 21 # android min sdk min:16, default 21
 # For information on the generic Dart part of this file, see the
 # following page: https://dart.dev/tools/pub/pubspec
 
