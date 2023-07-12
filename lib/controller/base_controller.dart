@@ -1,7 +1,8 @@
-// ignore_for_file: unnecessary_overrides
+// ignore_for_file: unnecessary_overrides, public_member_api_docs
 
 import 'package:get/get.dart';
 
+//Base Controller For Getx
 class BaseController extends GetxController {
   @override
   void onInit() {

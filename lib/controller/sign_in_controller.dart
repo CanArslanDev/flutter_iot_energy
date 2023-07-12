@@ -1,16 +1,15 @@
+// ignore_for_file: public_member_api_docs
+
 import 'package:firebase_auth/firebase_auth.dart';
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_iot_energy/controller/base_controller.dart';
+import 'package:flutter_iot_energy/routes/routes.dart';
 import 'package:flutter_iot_energy/services/auth_service.dart';
 import 'package:flutter_iot_energy/services/storage_service.dart';
 import 'package:flutter_iot_energy/ui_alerts/get_snackbar.dart';
-import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:get/get.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:responsive_sizer/responsive_sizer.dart';
-
-import '../routes/routes.dart';
-import 'base_controller.dart';
 
 class SignInController extends BaseController {
   final emailFieldController = TextEditingController();
@@ -21,16 +20,18 @@ class SignInController extends BaseController {
   @override
   void onInit() {
     super.onInit();
-    StorageService().getAutomaticSignAuth(() {
-      Get.offAndToNamed(Routes.mainPage);
-    }, () {
-      Get.back();
-    }, autoLoginDialog());
+    StorageService().getAutomaticSignAuth(
+      () {
+        Get.offAndToNamed<Object>(Routes.mainPage);
+      },
+      Get.back<Object>,
+      autoLoginDialog,
+    );
   }
 
-  void signIn() async {
-    if (emailFieldController.text == "" || passwordFieldController.text == "") {
-      showInformationSnackbar("Error", "Please fill in all fields");
+  Future<void> signIn() async {
+    if (emailFieldController.text == '' || passwordFieldController.text == '') {
+      showInformationSnackbar('Error', 'Please fill in all fields');
       return;
     }
     try {
@@ -38,31 +39,33 @@ class SignInController extends BaseController {
           .signIn(emailFieldController.text, passwordFieldController.text)
           .then((value) {
         StorageService().setEmailPasswordAuth(
-            emailFieldController.text, passwordFieldController.text);
-        Get.offAndToNamed(Routes.mainPage);
+          emailFieldController.text,
+          passwordFieldController.text,
+        );
+        Get.offAndToNamed<Object>(Routes.mainPage);
       });
     } on FirebaseAuthException catch (error) {
-      showInformationSnackbar("Error", error.message.toString());
+      showInformationSnackbar('Error', error.message.toString());
     }
   }
 
-  void signInGoogle() async {
+  Future<void> signInGoogle() async {
     try {
       await AuthService().signInGoogle().then((value) {
         StorageService().setGoogleAuth();
-        Get.offAndToNamed(Routes.mainPage);
+        Get.offAndToNamed<Object>(Routes.mainPage);
       });
     } on FirebaseAuthException catch (error) {
-      showInformationSnackbar("Error", error.message.toString());
+      showInformationSnackbar('Error', error.message.toString());
     }
   }
 
-  void recoveryPassword(String email) async {
+  Future<void> recoveryPassword(String email) async {
     try {
       await AuthService().resetPasswordEmail(email);
       recoveryPasswordSended.value = true;
     } on FirebaseAuthException catch (error) {
-      showInformationSnackbar("Error", error.message.toString());
+      showInformationSnackbar('Error', error.message.toString());
     }
   }
 
@@ -70,7 +73,7 @@ class SignInController extends BaseController {
     WidgetsBinding.instance.addPostFrameCallback((_) {
       showGeneralDialog(
         context: Get.context!,
-        barrierLabel: "Barrier",
+        barrierLabel: 'Barrier',
         barrierDismissible: true,
         barrierColor: Colors.black.withOpacity(0.2),
         transitionDuration: const Duration(milliseconds: 200),
@@ -80,47 +83,51 @@ class SignInController extends BaseController {
             child: Padding(
               padding: EdgeInsets.only(bottom: 20.h),
               child: Align(
-                alignment: Alignment.center,
                 child: Container(
                   height: 33.w,
                   width: 70.w,
                   margin: const EdgeInsets.symmetric(horizontal: 20),
                   padding: EdgeInsets.only(left: 4.w),
                   decoration: BoxDecoration(
-                      color: Theme.of(Get.context!).colorScheme.onBackground,
-                      borderRadius: BorderRadius.circular(4.w)),
+                    color: Theme.of(Get.context!).colorScheme.onBackground,
+                    borderRadius: BorderRadius.circular(4.w),
+                  ),
                   child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.center,
                     children: [
                       Padding(
                         padding: EdgeInsets.only(top: 2.w),
                         child: Material(
                           child: ShaderMask(
                             blendMode: BlendMode.srcIn,
-                            shaderCallback: (bounds) => LinearGradient(colors: [
-                              Colors.blue.shade400,
-                              Colors.blue.shade900,
-                            ]).createShader(
+                            shaderCallback: (bounds) => LinearGradient(
+                              colors: [
+                                Colors.blue.shade400,
+                                Colors.blue.shade900,
+                              ],
+                            ).createShader(
                               Rect.fromLTWH(0, 0, bounds.width, bounds.height),
                             ),
                             child: Text(
-                              "Auto Login Active",
+                              'Auto Login Active',
                               style: GoogleFonts.inter(
-                                  fontSize: 6.8.w, fontWeight: FontWeight.bold),
+                                fontSize: 6.8.w,
+                                fontWeight: FontWeight.bold,
+                              ),
                             ),
                           ),
                         ),
                       ),
                       Material(
                         child: Text(
-                          "Please Wait",
+                          'Please Wait',
                           style: GoogleFonts.inter(
-                              fontSize: 5.5.w,
-                              fontWeight: FontWeight.bold,
-                              color: Theme.of(Get.context!)
-                                  .colorScheme
-                                  .secondary
-                                  .withOpacity(0.7)),
+                            fontSize: 5.5.w,
+                            fontWeight: FontWeight.bold,
+                            color: Theme.of(Get.context!)
+                                .colorScheme
+                                .secondary
+                                .withOpacity(0.7),
+                          ),
                         ),
                       ),
                       Padding(

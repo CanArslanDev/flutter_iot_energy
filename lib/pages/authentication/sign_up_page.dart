@@ -1,12 +1,14 @@
+// ignore_for_file: public_member_api_docs
+
 import 'package:flutter/material.dart';
+import 'package:flutter_iot_energy/controller/sign_up_controller.dart';
 import 'package:flutter_iot_energy/routes/routes.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:get/get.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:intl_phone_field/intl_phone_field.dart';
 import 'package:responsive_sizer/responsive_sizer.dart';
-
-import '../../controller/sign_up_controller.dart';
+import 'package:url_launcher/url_launcher.dart';
 
 class SignUpPage extends GetView<SignUpController> {
   const SignUpPage({super.key});
@@ -14,100 +16,125 @@ class SignUpPage extends GetView<SignUpController> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-        resizeToAvoidBottomInset: false,
-        body: SafeArea(
-          child: Container(
-            height: 100.h,
-            width: 100.w,
-            decoration: backgroundDecoration,
-            child: Column(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              children: [
-                Column(
-                  children: [
-                    title,
-                    titleDescription,
-                    Padding(
-                      padding: EdgeInsets.symmetric(horizontal: 7.5.w),
-                      child: Column(
-                        children: [
-                          usernameField,
-                          emailField,
-                          phoneField,
-                          passwordField,
-                          passwordAgainField,
-                          signInButton,
-                          acceptPolicy,
-                        ],
-                      ),
+      resizeToAvoidBottomInset: false,
+      body: SafeArea(
+        child: Container(
+          height: 100.h,
+          width: 100.w,
+          decoration: backgroundDecoration,
+          child: Column(
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            children: [
+              Column(
+                children: [
+                  title,
+                  titleDescription,
+                  Padding(
+                    padding: EdgeInsets.symmetric(horizontal: 7.5.w),
+                    child: Column(
+                      children: [
+                        usernameField,
+                        emailField,
+                        phoneField,
+                        passwordField,
+                        passwordAgainField,
+                        signInButton,
+                        acceptPolicy,
+                      ],
                     ),
-                  ],
-                ),
-                Column(
-                  children: [
-                    registerText,
-                  ],
-                )
-              ],
-            ),
+                  ),
+                ],
+              ),
+              Column(
+                children: [
+                  registerText,
+                ],
+              )
+            ],
           ),
-        ));
+        ),
+      ),
+    );
   }
 
   Widget get acceptPolicy => Padding(
         padding: EdgeInsets.only(top: 1.5.h),
-        child: RichText(
-          textAlign: TextAlign.center,
-          text: TextSpan(
-            children: <TextSpan>[
-              TextSpan(
-                  text: "By registering, you agree to the ",
+        child: GestureDetector(
+          onTap: () async {
+            if (!await launchUrl(
+              Uri.parse(
+                'https://www.privacypolicies.com/live/de259e62-b55f-4e04-aa78-75901c3268e5',
+              ),
+              mode: LaunchMode.externalApplication,
+            )) {
+              throw Exception('Error');
+            }
+          },
+          child: RichText(
+            textAlign: TextAlign.center,
+            text: TextSpan(
+              children: <TextSpan>[
+                TextSpan(
+                  text: 'By registering, you agree to the ',
                   style: GoogleFonts.inter(
-                      fontWeight: FontWeight.bold,
-                      color: Theme.of(Get.context!).colorScheme.outline,
-                      fontSize: 3.7.w)),
-              TextSpan(
-                  text: "Privacy Policy ",
+                    fontWeight: FontWeight.bold,
+                    color: Theme.of(Get.context!).colorScheme.outline,
+                    fontSize: 3.7.w,
+                  ),
+                ),
+                TextSpan(
+                  text: 'Privacy Policy ',
                   style: GoogleFonts.inter(
-                      fontWeight: FontWeight.bold,
-                      color: Theme.of(Get.context!).colorScheme.tertiary,
-                      fontSize: 4.w)),
-              TextSpan(
-                  text: "and ",
+                    fontWeight: FontWeight.bold,
+                    color: Theme.of(Get.context!).colorScheme.tertiary,
+                    fontSize: 4.w,
+                  ),
+                ),
+                TextSpan(
+                  text: 'and ',
                   style: GoogleFonts.inter(
-                      fontWeight: FontWeight.bold,
-                      color: Theme.of(Get.context!).colorScheme.outline,
-                      fontSize: 3.7.w)),
-              TextSpan(
-                  text: "Terms Of Service",
+                    fontWeight: FontWeight.bold,
+                    color: Theme.of(Get.context!).colorScheme.outline,
+                    fontSize: 3.7.w,
+                  ),
+                ),
+                TextSpan(
+                  text: 'Terms Of Service',
                   style: GoogleFonts.inter(
-                      fontWeight: FontWeight.bold,
-                      color: Theme.of(Get.context!).colorScheme.tertiary,
-                      fontSize: 4.w)),
-            ],
+                    fontWeight: FontWeight.bold,
+                    color: Theme.of(Get.context!).colorScheme.tertiary,
+                    fontSize: 4.w,
+                  ),
+                ),
+              ],
+            ),
           ),
         ),
       );
 
   Widget get registerText => GestureDetector(
-        onTap: () => Get.offAndToNamed(Routes.signInPage),
+        onTap: () => Get.offAndToNamed<Object>(Routes.signInPage),
         child: Padding(
           padding: EdgeInsets.only(bottom: 12.8.w),
           child: RichText(
             text: TextSpan(
               children: <TextSpan>[
                 TextSpan(
-                    text: "Already a member? ",
-                    style: GoogleFonts.inter(
-                        fontWeight: FontWeight.bold,
-                        color: Theme.of(Get.context!).colorScheme.outline,
-                        fontSize: 3.7.w)),
+                  text: 'Already a member? ',
+                  style: GoogleFonts.inter(
+                    fontWeight: FontWeight.bold,
+                    color: Theme.of(Get.context!).colorScheme.outline,
+                    fontSize: 3.7.w,
+                  ),
+                ),
                 TextSpan(
-                    text: "Sign in",
-                    style: GoogleFonts.inter(
-                        fontWeight: FontWeight.bold,
-                        color: Theme.of(Get.context!).colorScheme.tertiary,
-                        fontSize: 4.w)),
+                  text: 'Sign in',
+                  style: GoogleFonts.inter(
+                    fontWeight: FontWeight.bold,
+                    color: Theme.of(Get.context!).colorScheme.tertiary,
+                    fontSize: 4.w,
+                  ),
+                ),
               ],
             ),
           ),
@@ -116,7 +143,7 @@ class SignUpPage extends GetView<SignUpController> {
 
   Decoration get backgroundDecoration => const BoxDecoration(
         image: DecorationImage(
-          image: AssetImage("assets/images/auth_bg_image.png"),
+          image: AssetImage('assets/images/auth_bg_image.png'),
           fit: BoxFit.cover,
         ),
       );
@@ -126,11 +153,12 @@ class SignUpPage extends GetView<SignUpController> {
         child: Align(
           alignment: Alignment.centerLeft,
           child: Text(
-            "Register",
+            'Register',
             style: GoogleFonts.inter(
-                color: Theme.of(Get.context!).colorScheme.secondary,
-                fontWeight: FontWeight.w500,
-                fontSize: 8.5.w),
+              color: Theme.of(Get.context!).colorScheme.secondary,
+              fontWeight: FontWeight.w500,
+              fontSize: 8.5.w,
+            ),
           ),
         ),
       );
@@ -141,17 +169,18 @@ class SignUpPage extends GetView<SignUpController> {
           height: 7.h,
           child: TextField(
             controller: controller.emailFieldController,
-            maxLines: 1,
             decoration: InputDecoration(
               filled: true,
-              hintText: "Email",
+              hintText: 'Email',
               hintStyle: GoogleFonts.inter(
-                  color: Theme.of(Get.context!).colorScheme.onSurface,
-                  fontWeight: FontWeight.bold),
+                color: Theme.of(Get.context!).colorScheme.onSurface,
+                fontWeight: FontWeight.bold,
+              ),
               fillColor: Theme.of(Get.context!).colorScheme.onBackground,
               border: OutlineInputBorder(
-                  borderSide: BorderSide.none,
-                  borderRadius: BorderRadius.circular(10)),
+                borderSide: BorderSide.none,
+                borderRadius: BorderRadius.circular(10),
+              ),
             ),
           ),
         ),
@@ -164,12 +193,13 @@ class SignUpPage extends GetView<SignUpController> {
           child: SizedBox(
             width: 70.w,
             child: Text(
-              "You can login to the application by registering",
+              'You can login to the application by registering',
               textAlign: TextAlign.left,
               style: GoogleFonts.inter(
-                  color: Theme.of(Get.context!).colorScheme.onTertiary,
-                  fontWeight: FontWeight.w500,
-                  fontSize: 4.w),
+                color: Theme.of(Get.context!).colorScheme.onTertiary,
+                fontWeight: FontWeight.w500,
+                fontSize: 4.w,
+              ),
             ),
           ),
         ),
@@ -183,14 +213,16 @@ class SignUpPage extends GetView<SignUpController> {
             controller: controller.usernameFieldController,
             decoration: InputDecoration(
               filled: true,
-              hintText: "Name and Surname",
+              hintText: 'Name and Surname',
               hintStyle: GoogleFonts.inter(
-                  color: Theme.of(Get.context!).colorScheme.onSurface,
-                  fontWeight: FontWeight.bold),
+                color: Theme.of(Get.context!).colorScheme.onSurface,
+                fontWeight: FontWeight.bold,
+              ),
               fillColor: Theme.of(Get.context!).colorScheme.onBackground,
               border: OutlineInputBorder(
-                  borderSide: BorderSide.none,
-                  borderRadius: BorderRadius.circular(10)),
+                borderSide: BorderSide.none,
+                borderRadius: BorderRadius.circular(10),
+              ),
             ),
           ),
         ),
@@ -204,14 +236,16 @@ class SignUpPage extends GetView<SignUpController> {
             disableLengthCheck: true,
             decoration: InputDecoration(
               filled: true,
-              hintText: "Phone",
+              hintText: 'Phone',
               hintStyle: GoogleFonts.inter(
-                  color: Theme.of(Get.context!).colorScheme.onSurface,
-                  fontWeight: FontWeight.bold),
+                color: Theme.of(Get.context!).colorScheme.onSurface,
+                fontWeight: FontWeight.bold,
+              ),
               fillColor: Theme.of(Get.context!).colorScheme.onBackground,
               border: OutlineInputBorder(
-                  borderSide: BorderSide.none,
-                  borderRadius: BorderRadius.circular(10)),
+                borderSide: BorderSide.none,
+                borderRadius: BorderRadius.circular(10),
+              ),
             ),
           ),
         ),
@@ -223,10 +257,8 @@ class SignUpPage extends GetView<SignUpController> {
           height: 7.h,
           child: Obx(
             () => TextField(
-              maxLines: 1,
               controller: controller.passwordFieldController,
-              obscureText:
-                  (controller.passwordHint.value == false) ? false : true,
+              obscureText: controller.passwordHint.value,
               decoration: InputDecoration(
                 suffixIcon: GestureDetector(
                   onTap: () => controller.passwordHint.value =
@@ -239,14 +271,16 @@ class SignUpPage extends GetView<SignUpController> {
                   ),
                 ),
                 filled: true,
-                hintText: "Password",
+                hintText: 'Password',
                 hintStyle: GoogleFonts.inter(
-                    color: Theme.of(Get.context!).colorScheme.onSurface,
-                    fontWeight: FontWeight.bold),
+                  color: Theme.of(Get.context!).colorScheme.onSurface,
+                  fontWeight: FontWeight.bold,
+                ),
                 fillColor: Theme.of(Get.context!).colorScheme.onBackground,
                 border: OutlineInputBorder(
-                    borderSide: BorderSide.none,
-                    borderRadius: BorderRadius.circular(10)),
+                  borderSide: BorderSide.none,
+                  borderRadius: BorderRadius.circular(10),
+                ),
               ),
             ),
           ),
@@ -258,10 +292,8 @@ class SignUpPage extends GetView<SignUpController> {
           height: 7.h,
           child: Obx(
             () => TextField(
-              maxLines: 1,
               controller: controller.passwordAgainFieldController,
-              obscureText:
-                  (controller.passwordAgainHint.value == false) ? false : true,
+              obscureText: controller.passwordAgainHint.value,
               decoration: InputDecoration(
                 suffixIcon: GestureDetector(
                   onTap: () => controller.passwordAgainHint.value =
@@ -274,14 +306,16 @@ class SignUpPage extends GetView<SignUpController> {
                   ),
                 ),
                 filled: true,
-                hintText: "Password Again",
+                hintText: 'Password Again',
                 hintStyle: GoogleFonts.inter(
-                    color: Theme.of(Get.context!).colorScheme.onSurface,
-                    fontWeight: FontWeight.bold),
+                  color: Theme.of(Get.context!).colorScheme.onSurface,
+                  fontWeight: FontWeight.bold,
+                ),
                 fillColor: Theme.of(Get.context!).colorScheme.onBackground,
                 border: OutlineInputBorder(
-                    borderSide: BorderSide.none,
-                    borderRadius: BorderRadius.circular(10)),
+                  borderSide: BorderSide.none,
+                  borderRadius: BorderRadius.circular(10),
+                ),
               ),
             ),
           ),
@@ -308,11 +342,12 @@ class SignUpPage extends GetView<SignUpController> {
             ),
             child: Center(
               child: Text(
-                "Sign Up",
+                'Sign Up',
                 style: GoogleFonts.inter(
-                    color: Theme.of(Get.context!).colorScheme.onBackground,
-                    fontWeight: FontWeight.bold,
-                    fontSize: 4.5.w),
+                  color: Theme.of(Get.context!).colorScheme.onBackground,
+                  fontWeight: FontWeight.bold,
+                  fontSize: 4.5.w,
+                ),
               ),
             ),
           ),

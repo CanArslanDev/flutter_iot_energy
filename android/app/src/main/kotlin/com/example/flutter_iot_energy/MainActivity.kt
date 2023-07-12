@@ -1,4 +1,4 @@
-package com.example.flutter_iot_energy
+package com.iot_energy
 
 import io.flutter.embedding.android.FlutterActivity
 

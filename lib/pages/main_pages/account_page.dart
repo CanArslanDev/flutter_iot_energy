@@ -1,10 +1,9 @@
+// ignore_for_file: public_member_api_docs
+
 import 'package:flutter/material.dart';
-import 'package:flutter/src/widgets/framework.dart';
-import 'package:flutter/src/widgets/placeholder.dart';
+import 'package:flutter_iot_energy/routes/routes.dart';
 import 'package:flutter_iot_energy/services/auth_service.dart';
 import 'package:get/get.dart';
-
-import '../../routes/routes.dart';
 
 class AccountPage extends StatefulWidget {
   const AccountPage({super.key});
@@ -21,11 +20,12 @@ class _AccountPageState extends State<AccountPage> {
         child: Column(
           children: [
             ElevatedButton(
-                onPressed: () async {
-                  await AuthService().signOut();
-                  Get.offAndToNamed(Routes.signInPage);
-                },
-                child: Text(""))
+              onPressed: () async {
+                await AuthService().signOut();
+                await Get.offAndToNamed<Object>(Routes.signInPage);
+              },
+              child: const Text(''),
+            )
           ],
         ),
       ),

@@ -1,3 +1,5 @@
+// ignore_for_file: public_member_api_docs
+
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter_iot_energy/services/firebase_service.dart';
@@ -11,34 +13,46 @@ class AuthService {
 
   //sign in function
   Future<User> signIn(String email, String password) async {
-    var user = await _auth.signInWithEmailAndPassword(
-        email: email, password: password);
-    var collectionuser = FirebaseFirestore.instance.collection('users');
-    var docSnapshotuser = await collectionuser.doc(user.user!.uid).get();
+    final user = await _auth.signInWithEmailAndPassword(
+      email: email,
+      password: password,
+    );
+    final collectionuser = FirebaseFirestore.instance.collection('users');
+    final docSnapshotuser = await collectionuser.doc(user.user!.uid).get();
     if (docSnapshotuser.exists) {
-      Map<String, dynamic>? datauser = docSnapshotuser.data();
+      final datauser = docSnapshotuser.data();
       await ValueService().initializeLogin(
-          datauser?['username'], email, datauser?['phone'], user.user?.uid);
+        datauser!['username'].toString(),
+        email,
+        datauser['phone'].toString(),
+        user.user!.uid,
+      );
     }
     return user.user!;
   }
 
   //sign out function
-  signOut() async {
+  Future<void> signOut() async {
     const storage = FlutterSecureStorage();
     await storage.delete(key: 'email');
     await storage.delete(key: 'password');
     await storage.delete(key: 'auth');
-    return await _auth.signOut();
+    return _auth.signOut();
   }
 
   //sign up function
   Future<User> signUp(
-      String name, String email, String phone, String password) async {
-    var user = await _auth.createUserWithEmailAndPassword(
-        email: email, password: password);
+    String name,
+    String email,
+    String phone,
+    String password,
+  ) async {
+    final user = await _auth.createUserWithEmailAndPassword(
+      email: email,
+      password: password,
+    );
 
-    await _firestore.collection("users").doc(user.user!.uid).set({
+    await _firestore.collection('users').doc(user.user!.uid).set({
       'username': name,
       'email': email,
       'phone': phone,
@@ -49,15 +63,17 @@ class AuthService {
   }
 
   Future<User> signInGoogle() async {
-    GoogleSignInAccount? googleUser = await GoogleSignIn().signIn();
-    GoogleSignInAuthentication? googleAuth = await googleUser?.authentication;
-    AuthCredential credential = GoogleAuthProvider.credential(
-        accessToken: googleAuth?.accessToken, idToken: googleAuth?.idToken);
-    UserCredential userCredential =
+    final googleUser = await GoogleSignIn().signIn();
+    final googleAuth = await googleUser?.authentication;
+    final credential = GoogleAuthProvider.credential(
+      accessToken: googleAuth?.accessToken,
+      idToken: googleAuth?.idToken,
+    );
+    final userCredential =
         await FirebaseAuth.instance.signInWithCredential(credential);
     if (await FirebaseService().authGetUser(userCredential.user!.uid) ==
         false) {
-      await _firestore.collection("users").doc(userCredential.user!.uid).set({
+      await _firestore.collection('users').doc(userCredential.user!.uid).set({
         'username': userCredential.user?.displayName,
         'email': userCredential.user?.email,
         'phone': userCredential.user?.phoneNumber,
@@ -66,14 +82,15 @@ class AuthService {
       });
     }
     await ValueService().initializeLogin(
-        userCredential.user?.displayName,
-        userCredential.user?.email,
-        userCredential.user?.phoneNumber,
-        userCredential.user?.uid);
+      userCredential.user!.displayName.toString(),
+      userCredential.user!.email.toString(),
+      userCredential.user!.phoneNumber.toString(),
+      userCredential.user!.uid,
+    );
     return userCredential.user!;
   }
 
-  Future resetPasswordEmail(String email) async {
+  Future<void> resetPasswordEmail(String email) async {
     await _auth.sendPasswordResetEmail(email: email);
   }
 }

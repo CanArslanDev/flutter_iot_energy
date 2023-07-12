@@ -1,3 +1,5 @@
+// ignore_for_file: public_member_api_docs
+
 import 'package:flutter/material.dart';
 import 'package:flutter_iot_energy/pages/main_pages/account_page.dart';
 import 'package:flutter_iot_energy/pages/main_pages/home_page.dart';
@@ -28,65 +30,71 @@ class _MainPageState extends State<MainPage> {
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: Theme.of(Get.context!).colorScheme.background,
-      body: Stack(alignment: Alignment.bottomCenter, children: [
-        Center(
-          child: _widgetOptions.elementAt(_selectedIndex),
-        ),
-        Container(
-          decoration: BoxDecoration(
-            gradient: LinearGradient(
+      body: Stack(
+        alignment: Alignment.bottomCenter,
+        children: [
+          Center(
+            child: _widgetOptions.elementAt(_selectedIndex),
+          ),
+          Container(
+            decoration: BoxDecoration(
+              gradient: LinearGradient(
                 begin: Alignment.bottomCenter,
                 end: Alignment.topCenter,
                 colors: [
                   Colors.white,
-                  Colors.white.withOpacity(0.0),
-                ]),
-          ),
-          child: Padding(
-            padding: const EdgeInsets.symmetric(horizontal: 10.0, vertical: 8),
-            child: Container(
-              padding: EdgeInsets.symmetric(horizontal: 3.w, vertical: 1.5.w),
-              decoration: BoxDecoration(
-                  color: Theme.of(Get.context!).colorScheme.onPrimaryContainer,
-                  borderRadius: BorderRadius.circular(50)),
-              child: GNav(
-                gap: 12,
-                activeColor: Colors.white,
-                iconSize: 24,
-                padding:
-                    const EdgeInsets.symmetric(horizontal: 15, vertical: 12),
-                duration: const Duration(milliseconds: 400),
-                tabBackgroundColor: Colors.white.withOpacity(0.07),
-                color: Theme.of(Get.context!).colorScheme.onSecondaryContainer,
-                tabs: const [
-                  GButton(
-                    icon: FontAwesomeIcons.house,
-                    text: 'Home',
-                  ),
-                  GButton(
-                    icon: FontAwesomeIcons.magnifyingGlass,
-                    text: 'Search',
-                  ),
-                  GButton(
-                    icon: FontAwesomeIcons.heart,
-                    text: 'Likes',
-                  ),
-                  GButton(
-                    icon: FontAwesomeIcons.user,
-                    text: 'Profile',
-                  ),
+                  Colors.white.withOpacity(0),
                 ],
-                selectedIndex: _selectedIndex,
-                onTabChange: (index) {
-                  setState(() {
-                    _selectedIndex = index;
-                  });
-                },
+              ),
+            ),
+            child: Padding(
+              padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 8),
+              child: Container(
+                padding: EdgeInsets.symmetric(horizontal: 3.w, vertical: 1.5.w),
+                decoration: BoxDecoration(
+                  color: Theme.of(Get.context!).colorScheme.onPrimaryContainer,
+                  borderRadius: BorderRadius.circular(50),
+                ),
+                child: GNav(
+                  gap: 12,
+                  activeColor: Colors.white,
+                  iconSize: 24,
+                  padding:
+                      const EdgeInsets.symmetric(horizontal: 15, vertical: 12),
+                  duration: const Duration(milliseconds: 400),
+                  tabBackgroundColor: Colors.white.withOpacity(0.07),
+                  color:
+                      Theme.of(Get.context!).colorScheme.onSecondaryContainer,
+                  tabs: const [
+                    GButton(
+                      icon: FontAwesomeIcons.house,
+                      text: 'Home',
+                    ),
+                    GButton(
+                      icon: FontAwesomeIcons.magnifyingGlass,
+                      text: 'Search',
+                    ),
+                    GButton(
+                      icon: FontAwesomeIcons.heart,
+                      text: 'Likes',
+                    ),
+                    GButton(
+                      icon: FontAwesomeIcons.user,
+                      text: 'Profile',
+                    ),
+                  ],
+                  selectedIndex: _selectedIndex,
+                  onTabChange: (index) {
+                    setState(() {
+                      _selectedIndex = index;
+                    });
+                  },
+                ),
               ),
             ),
           ),
-        ),
-      ]),
+        ],
+      ),
     );
   }
 }

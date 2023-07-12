@@ -1,3 +1,5 @@
+// ignore_for_file: public_member_api_docs
+
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:google_fonts/google_fonts.dart';
@@ -7,7 +9,7 @@ import 'package:responsive_sizer/responsive_sizer.dart';
 void dialogInformation(BuildContext context, String title, String description) {
   showGeneralDialog(
     context: context,
-    barrierLabel: "Barrier",
+    barrierLabel: 'Barrier',
     barrierDismissible: true,
     barrierColor: Colors.black.withOpacity(0.5),
     transitionDuration: const Duration(milliseconds: 200),
@@ -18,17 +20,17 @@ void dialogInformation(BuildContext context, String title, String description) {
           width: 60.w,
           margin: const EdgeInsets.symmetric(horizontal: 20),
           decoration: BoxDecoration(
-              color: Theme.of(context).colorScheme.onBackground,
-              borderRadius: BorderRadius.circular(30),
-              border: GradientBoxBorder(
-                  width: 3,
-                  gradient: LinearGradient(
-                      begin: Alignment.topCenter,
-                      end: Alignment.bottomCenter,
-                      colors: [
-                        Theme.of(context).colorScheme.primary,
-                        Colors.white
-                      ]))),
+            color: Theme.of(context).colorScheme.onBackground,
+            borderRadius: BorderRadius.circular(30),
+            border: GradientBoxBorder(
+              width: 3,
+              gradient: LinearGradient(
+                begin: Alignment.topCenter,
+                end: Alignment.bottomCenter,
+                colors: [Theme.of(context).colorScheme.primary, Colors.white],
+              ),
+            ),
+          ),
           child: Center(
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
@@ -44,10 +46,11 @@ void dialogInformation(BuildContext context, String title, String description) {
                           title,
                           textAlign: TextAlign.center,
                           style: GoogleFonts.inter(
-                              decoration: TextDecoration.none,
-                              color: Theme.of(context).colorScheme.secondary,
-                              fontSize: 6.w,
-                              fontWeight: FontWeight.bold),
+                            decoration: TextDecoration.none,
+                            color: Theme.of(context).colorScheme.secondary,
+                            fontSize: 6.w,
+                            fontWeight: FontWeight.bold,
+                          ),
                         ),
                       ),
                       Padding(
@@ -68,17 +71,19 @@ void dialogInformation(BuildContext context, String title, String description) {
                   ),
                 ),
                 GestureDetector(
-                  onTap: () => Get.back(),
+                  onTap: Get.back<Object>,
                   child: Container(
                     height: 10.w,
                     decoration: BoxDecoration(
                       border: Border(
-                          top: BorderSide(
-                              color: Colors.grey.shade800, width: 1)),
+                        top: BorderSide(
+                          color: Colors.grey.shade800,
+                        ),
+                      ),
                     ),
                     child: Center(
                       child: Text(
-                        "Okay",
+                        'Okay',
                         textAlign: TextAlign.center,
                         style: GoogleFonts.inter(
                           decoration: TextDecoration.none,

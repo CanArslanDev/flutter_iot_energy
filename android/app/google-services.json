@@ -1,20 +1,29 @@
 {
   "project_info": {
     "project_number": "900490141548",
+    "firebase_url": "https://energy-e67ed-default-rtdb.firebaseio.com",
     "project_id": "energy-e67ed",
     "storage_bucket": "energy-e67ed.appspot.com"
   },
   "client": [
     {
       "client_info": {
-        "mobilesdk_app_id": "1:900490141548:android:a7e747d17ec215879d1d49",
+        "mobilesdk_app_id": "1:900490141548:android:8f2b6278543936779d1d49",
         "android_client_info": {
-          "package_name": "com.example.flutter_iot_energy"
+          "package_name": "com.iot_energy"
         }
       },
       "oauth_client": [
         {
-          "client_id": "900490141548-2i23g3d9h5j6995i4m5m3d26qvtqq6fk.apps.googleusercontent.com",
+          "client_id": "900490141548-2l0tddrdqupdh0oksbc1bf1e5q6vsdpc.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.iot_energy",
+            "certificate_hash": "2cf6a081c27cf1e01ca9992d12efb4a3e1db9866"
+          }
+        },
+        {
+          "client_id": "900490141548-71abfb0sumsh8hstq94apnf01f9oekq0.apps.googleusercontent.com",
           "client_type": 3
         }
       ],

@@ -1,36 +1,42 @@
-import 'package:firebase_auth/firebase_auth.dart';
+// ignore_for_file: public_member_api_docs
+
 import 'package:flutter/material.dart';
+import 'package:flutter_iot_energy/services/auth_service.dart';
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 
-import 'auth_service.dart';
-
+///Storage Services
 class StorageService {
   final storage = const FlutterSecureStorage();
-  void setEmailPasswordAuth(String email, String password) async {
+
+  ///set meail password
+  Future<void> setEmailPasswordAuth(String email, String password) async {
     await storage.write(key: 'email', value: email);
     await storage.write(key: 'password', value: password);
     await storage.write(key: 'auth', value: 'email');
   }
 
-  void setGoogleAuth() async {
+  ///set Google Auth
+  Future<void> setGoogleAuth() async {
     await storage.write(key: 'auth', value: 'google');
   }
 
-  getAutomaticSignAuth(
-      VoidCallback callback, VoidCallback errorCallback, void widget) async {
-    widget;
-    String? auth = await storage.read(key: 'auth');
+  Future<void> getAutomaticSignAuth(
+    VoidCallback callback,
+    VoidCallback errorCallback,
+    void Function() widget,
+  ) async {
+    widget();
+    final auth = await storage.read(key: 'auth');
     if (auth == 'email') {
       try {
-        String? email = await storage.read(key: 'email');
-        String? password = await storage.read(key: 'password');
+        final email = await storage.read(key: 'email');
+        final password = await storage.read(key: 'password');
         await AuthService().signIn(email!, password!).then((value) {
           callback();
         });
         // ignore: unused_catch_clause
       } catch (error) {
         errorCallback();
-        return null;
       }
     } else if (auth == 'google') {
       await AuthService().signInGoogle().then((value) {

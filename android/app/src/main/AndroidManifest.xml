@@ -1,5 +1,5 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
-    package="com.example.flutter_iot_energy">
+    package="com.iot_energy">
    <application
         android:label="IOT Energy"
         android:name="${applicationName}"

@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
+///showInformationSnackbar
 void showInformationSnackbar(String title, String message) {
   Get.snackbar(
     title,

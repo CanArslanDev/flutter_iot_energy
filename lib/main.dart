@@ -1,3 +1,5 @@
+// ignore_for_file: public_member_api_docs
+
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_iot_energy/routes/pages.dart';
@@ -20,9 +22,7 @@ class MyApp extends StatelessWidget {
         return GetMaterialApp(
           title: 'Energy',
           theme: ThemeData(
-            colorScheme: ColorScheme.fromSwatch(
-              primarySwatch: Colors.blue,
-            ).copyWith(
+            colorScheme: ColorScheme.fromSwatch().copyWith(
               primary: const Color(0xFFFFA800),
               onPrimary: const Color(0xFFFFBA0C),
               secondary: const Color(0xFF000000),
