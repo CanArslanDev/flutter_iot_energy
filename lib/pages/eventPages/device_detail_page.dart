@@ -10,17 +10,18 @@ import 'package:responsive_sizer/responsive_sizer.dart';
 
 class DeviceDetailPage extends GetView<DeviceDetailPageController> {
   const DeviceDetailPage({super.key});
-
   @override
   Widget build(BuildContext context) {
-    controller.initializeId(((Get.arguments as List)[0] as Object) as String);
+   if(controller.initialize==false) {
+    controller.initializeId(((Get.arguments as List)[0]as Object) as String);
+   }
     return Scaffold(
       backgroundColor: Theme.of(Get.context!).colorScheme.onBackground,
-      body: SafeArea(
-        child: Container(
+      body: Container(
           height: 100.h,
           width: 100.w,
           decoration: backgroundDecoration,
+        child: SafeArea(
           child: SingleChildScrollView(
             child: Column(
               children: [
@@ -211,33 +212,36 @@ class DeviceDetailPage extends GetView<DeviceDetailPageController> {
                 ),
                 Padding(
                   padding: EdgeInsets.only(top: 2.w),
-                  child: Container(
-                    height: 9.5.w,
-                    decoration: BoxDecoration(
-                      color: Theme.of(Get.context!).colorScheme.onBackground,
-                      borderRadius: BorderRadius.circular(4.w),
-                      border: const GradientBoxBorder(
-                        gradient: LinearGradient(
-                          colors: [Colors.blue, Colors.pink],
-                          begin: Alignment.topCenter,
-                          end: Alignment.bottomCenter,
+                  child: GestureDetector(
+                    onTap: () => controller.routeAddScenePage(),
+                    child: Container(
+                      height: 9.5.w,
+                      decoration: BoxDecoration(
+                        color: Theme.of(Get.context!).colorScheme.onBackground,
+                        borderRadius: BorderRadius.circular(4.w),
+                        border: const GradientBoxBorder(
+                          gradient: LinearGradient(
+                            colors: [Colors.blue, Colors.pink],
+                            begin: Alignment.topCenter,
+                            end: Alignment.bottomCenter,
+                          ),
+                          width: 1.5,
                         ),
-                        width: 1.5,
                       ),
-                    ),
-                    child: SizedBox(
-                      width: 32.w,
-                      child: Center(
-                        child: Text(
-                          'Create Scene',
-                          style: GoogleFonts.inter(
-                            height: 1,
-                            color: Theme.of(Get.context!)
-                                .colorScheme
-                                .onTertiary
-                                .withOpacity(0.8),
-                            fontWeight: FontWeight.w900,
-                            fontSize: 4.w,
+                      child: SizedBox(
+                        width: 32.w,
+                        child: Center(
+                          child: Text(
+                            'Create Scene',
+                            style: GoogleFonts.inter(
+                              height: 1,
+                              color: Theme.of(Get.context!)
+                                  .colorScheme
+                                  .onTertiary
+                                  .withOpacity(0.8),
+                              fontWeight: FontWeight.w900,
+                              fontSize: 4.w,
+                            ),
                           ),
                         ),
                       ),
@@ -389,26 +393,29 @@ class DeviceDetailPage extends GetView<DeviceDetailPageController> {
               children: [
                 Padding(
                   padding: EdgeInsets.only(left: 3.w),
-                  child: Container(
-                    width: 13.5.w,
-                    height: 13.5.w,
-                    decoration: BoxDecoration(
-                      color: Theme.of(Get.context!).colorScheme.onBackground,
-                      borderRadius: BorderRadius.circular(16),
-                      border: Border.all(
+                  child: GestureDetector(
+                    onTap: ()=>controller.returnBackPage(),
+                    child: Container(
+                      width: 13.5.w,
+                      height: 13.5.w,
+                      decoration: BoxDecoration(
+                        color: Theme.of(Get.context!).colorScheme.onBackground,
+                        borderRadius: BorderRadius.circular(16),
+                        border: Border.all(
+                          color: Theme.of(Get.context!)
+                              .colorScheme
+                              .onTertiary
+                              .withOpacity(0.2),
+                        ),
+                      ),
+                      child: Icon(
+                        Icons.keyboard_arrow_left,
+                        size: 9.w,
                         color: Theme.of(Get.context!)
                             .colorScheme
                             .onTertiary
-                            .withOpacity(0.2),
+                            .withOpacity(0.7),
                       ),
-                    ),
-                    child: Icon(
-                      Icons.keyboard_arrow_left,
-                      size: 9.w,
-                      color: Theme.of(Get.context!)
-                          .colorScheme
-                          .onTertiary
-                          .withOpacity(0.7),
                     ),
                   ),
                 )

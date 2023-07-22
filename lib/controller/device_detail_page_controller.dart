@@ -5,7 +5,7 @@ import 'dart:async';
 import 'package:firebase_database/firebase_database.dart';
 import 'package:flutter_iot_energy/controller/base_controller.dart';
 import 'package:flutter_iot_energy/services/firebase_service.dart';
-import 'package:get/get_rx/src/rx_types/rx_types.dart';
+import 'package:get/get.dart';
 
 class DeviceDetailPageController extends BaseController {
 //   @override
@@ -28,8 +28,10 @@ class DeviceDetailPageController extends BaseController {
   Rx<bool> active = false.obs;
   Rx<bool> power = false.obs;
   Rx<int> watt = 0.obs;
+  bool initialize=false;
 
   void initializeId(String id) {
+    initialize=true;
     deviceId = id;
     _deviceRef = FirebaseDatabase.instance.ref().child('devices/$id');
     _deviceSubscription = _deviceRef.onValue.listen((event) {
@@ -68,5 +70,13 @@ class DeviceDetailPageController extends BaseController {
 
   Future<void> changePowerStatus() async {
     await FirebaseService().setDevicePower(deviceId, !power.value ? 0 : -1);
+  }
+
+  void returnBackPage(){
+    Get.back<Object>();
+  }
+
+  void routeAddScenePage(){
+    Get.toNamed<Object>('add-scene-page');
   }
 }

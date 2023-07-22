@@ -1,5 +1,6 @@
 // ignore_for_file: public_member_api_docs
 
+import 'package:flutter_iot_energy/bindings/add_scene_page.dart';
 import 'package:flutter_iot_energy/bindings/device_detail_page_binding.dart';
 import 'package:flutter_iot_energy/bindings/main_page_binding.dart';
 import 'package:flutter_iot_energy/bindings/pair_device_page_binding.dart';
@@ -7,6 +8,7 @@ import 'package:flutter_iot_energy/bindings/sign_in_binding.dart';
 import 'package:flutter_iot_energy/bindings/sign_up_binding.dart';
 import 'package:flutter_iot_energy/pages/authentication/sign_in_page.dart';
 import 'package:flutter_iot_energy/pages/authentication/sign_up_page.dart';
+import 'package:flutter_iot_energy/pages/eventPages/add_scene_page.dart';
 import 'package:flutter_iot_energy/pages/eventPages/device_detail_page.dart';
 import 'package:flutter_iot_energy/pages/eventPages/pair_device_page.dart';
 import 'package:flutter_iot_energy/pages/main_pages/main_page.dart';
@@ -39,6 +41,11 @@ abstract class Pages {
       name: Routes.deviceDetailPage,
       page: () => const DeviceDetailPage(),
       binding: DeviceDetailPageBinding(),
+    ),
+    GetPage(
+      name: Routes.addScenePage,
+      page: () => const AddScenePage(),
+      binding: AddScenePageBinding(),
     ),
   ];
 }
