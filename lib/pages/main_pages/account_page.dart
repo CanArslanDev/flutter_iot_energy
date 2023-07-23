@@ -1,5 +1,3 @@
-// ignore_for_file: public_member_api_docs
-
 import 'package:flutter/material.dart';
 import 'package:flutter_iot_energy/routes/routes.dart';
 import 'package:flutter_iot_energy/services/auth_service.dart';

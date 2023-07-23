@@ -7,3 +7,4 @@ Yapılacaklar
 - add scene information eklenecek
 - ana sayfaya eğer kullanıcıda o idle eşleşen cihaz zaten varsa tekrar ekleyemeyecek
 - device scenes builder yapılacak
+-senaryo değiştirme eklenecek

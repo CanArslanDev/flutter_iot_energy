@@ -1,5 +1,3 @@
-// ignore_for_file: public_member_api_docs
-
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_database/firebase_database.dart';
 import 'package:flutter_iot_energy/services/value_service.dart';
@@ -60,16 +58,18 @@ class FirebaseService {
     String deviceId,
     int deviceType,
   ) async {
-    final collection =
-        FirebaseFirestore.instance.collection('users/$accountId/devices');
-    await collection.add({
+    final collection = FirebaseFirestore.instance
+        .collection('users/$accountId/devices')
+        .doc(deviceId);
+    await collection.set({
       'deviceName': deviceName,
       'deviceId': deviceId,
       'deviceType': deviceType,
+      'totalSceneCount': 0,
     });
     final collectionuser = FirebaseFirestore.instance.collection('users');
     await collectionuser
-        .doc(accountId) // <-- Doc ID where data should be updated.
+        .doc(accountId)
         .update({'totalDeviceCount': accountTotalDevices + 1});
   }
 
@@ -230,25 +230,72 @@ class FirebaseService {
     return totalVoltage;
   }
 
-  Future<void> setDatabaseScene(
+  Future<void> setDeviceScene(
     String accountId,
     String deviceDataId,
+    String deviceId,
     int deviceType,
     int hour,
     int minute,
     int day,
     int plan,
   ) async {
-    final sceneRef = FirebaseFirestore.instance
-        .collection('users/$accountId/devices/$deviceDataId/scenes');
+// get-set scene count firestore database
+    final getCountCollection =
+        FirebaseFirestore.instance.collection('users/$accountId/devices');
+    final docSnapshot = await getCountCollection.doc(deviceDataId).get();
+    final getCountdata = docSnapshot.data();
+    final totalSceneCount = (getCountdata?['totalSceneCount'] as int) + 1;
+    await getCountCollection
+        .doc(deviceDataId)
+        .update({'totalSceneCount': totalSceneCount});
 
-    await sceneRef.add({
+//set list
+
+    final listDatabase = {
       'deviceType': deviceType,
       'hour': hour,
       'minute': minute,
       'day': day,
       'plan': plan,
       'enable': true,
-    });
+      'timestamp': DateTime.now()
+    };
+    final listRealtimeDatabase = {
+      'deviceType': deviceType,
+      'hour': hour,
+      'minute': minute,
+      'day': day,
+      'plan': plan,
+      'enable': true,
+      'timestamp': DateTime.now().toString()
+    };
+
+//set scene firestore database
+    final sceneRef = FirebaseFirestore.instance
+        .collection('users/$accountId/devices/$deviceDataId/scenes')
+        .doc('scene_$totalSceneCount');
+    await sceneRef.set(listDatabase);
+
+// set scene realtime database
+    final sceneRealtimeRef = FirebaseDatabase.instance
+        .ref()
+        .child('devices/$deviceId/scene_$totalSceneCount');
+
+    await sceneRealtimeRef.update(listRealtimeDatabase);
+  }
+
+  Future<void> setDeviceSceneEnableValue(
+    String deviceId,
+    String sceneId,
+    dynamic value,
+  ) async {
+    final sceneRef = FirebaseFirestore.instance
+        .collection('users/$accountId/devices/$deviceId/scenes/')
+        .doc(sceneId);
+    final sceneRealtimeRef =
+        FirebaseDatabase.instance.ref().child('devices/$deviceId/scene_1');
+    await sceneRealtimeRef.update({'enable': value});
+    await sceneRef.update({'enable': value});
   }
 }

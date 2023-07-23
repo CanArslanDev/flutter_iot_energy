@@ -1,5 +1,3 @@
-// ignore_for_file: public_member_api_docs
-
 import 'package:flutter_iot_energy/bindings/add_scene_page_binding.dart';
 import 'package:flutter_iot_energy/bindings/device_detail_page_binding.dart';
 import 'package:flutter_iot_energy/bindings/main_page_binding.dart';

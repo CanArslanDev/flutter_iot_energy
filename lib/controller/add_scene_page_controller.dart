@@ -13,16 +13,19 @@ class AddScenePageController extends BaseController {
   Rx<int> minute = DateTime.now().minute.obs;
   Rx<int> planIndex = 0.obs;
   Rx<int> dayIndex = 0.obs;
+  Rx<bool> loading = false.obs;
   void setClock(int voidHour, int voidMinute) {
     hour.value = voidHour;
     minute.value = voidMinute;
   }
 
   Future<void> saveSceneButton() async {
+    loading.value = true;
     final controller = Get.put(DeviceDetailPageController());
-    await FirebaseService().setDatabaseScene(
+    await FirebaseService().setDeviceScene(
       accountId,
       controller.deviceDataId,
+      controller.deviceId,
       controller.deviceType,
       hour.value,
       minute.value,

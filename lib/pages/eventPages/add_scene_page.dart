@@ -1,5 +1,3 @@
-// ignore_for_file: public_member_api_docs
-
 import 'package:flutter/material.dart';
 import 'package:flutter_iot_energy/controller/add_scene_page_controller.dart';
 import 'package:flutter_iot_energy/ui/text_style.dart';
@@ -59,10 +57,24 @@ class AddScenePage extends GetView<AddScenePageController> {
                 width: 2.5,
               ),
             ),
-            child: SizedBox(
-              width: 90.w,
-              child:
-                  Center(child: Text('Save Scene', style: pageTitleTextStyle)),
+            child: Obx(
+              () => SizedBox(
+                width: 90.w,
+                child: controller.loading.value
+                    ? Center(
+                        child: SizedBox(
+                          height: 9.w,
+                          width: 9.w,
+                          child: CircularProgressIndicator(
+                            color:
+                                Theme.of(Get.context!).colorScheme.onTertiary,
+                          ),
+                        ),
+                      )
+                    : Center(
+                        child: Text('Save Scene', style: pageTitleTextStyle),
+                      ),
+              ),
             ),
           ),
         ),

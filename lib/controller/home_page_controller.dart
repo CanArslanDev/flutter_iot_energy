@@ -1,5 +1,3 @@
-// ignore_for_file: public_member_api_docs
-
 import 'package:flutter_iot_energy/controller/base_controller.dart';
 import 'package:flutter_iot_energy/routes/routes.dart';
 import 'package:flutter_iot_energy/services/firebase_service.dart';
