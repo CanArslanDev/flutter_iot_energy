@@ -43,23 +43,27 @@ class AddScenePage extends GetView<AddScenePageController> {
 
   Widget get saveButton => Padding(
         padding: EdgeInsets.only(top: 8.w),
-        child: Container(
-          height: 12.w,
-          decoration: BoxDecoration(
-            color: Theme.of(Get.context!).colorScheme.onBackground,
-            borderRadius: BorderRadius.circular(4.w),
-            border: const GradientBoxBorder(
-              gradient: LinearGradient(
-                colors: [Colors.blue, Colors.pink],
-                begin: Alignment.topCenter,
-                end: Alignment.bottomCenter,
+        child: GestureDetector(
+          onTap: () => controller.saveSceneButton(),
+          child: Container(
+            height: 12.w,
+            decoration: BoxDecoration(
+              color: Theme.of(Get.context!).colorScheme.onBackground,
+              borderRadius: BorderRadius.circular(4.w),
+              border: const GradientBoxBorder(
+                gradient: LinearGradient(
+                  colors: [Colors.blue, Colors.pink],
+                  begin: Alignment.topCenter,
+                  end: Alignment.bottomCenter,
+                ),
+                width: 2.5,
               ),
-              width: 2.5,
             ),
-          ),
-          child: SizedBox(
-            width: 90.w,
-            child: Center(child: Text('Save Scene', style: pageTitleTextStyle)),
+            child: SizedBox(
+              width: 90.w,
+              child:
+                  Center(child: Text('Save Scene', style: pageTitleTextStyle)),
+            ),
           ),
         ),
       );

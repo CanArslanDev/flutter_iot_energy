@@ -33,7 +33,7 @@ class HomePage extends GetView<HomePageController> {
             } else if (mode == LoadStatus.loading) {
               body = const CupertinoActivityIndicator();
             } else if (mode == LoadStatus.failed) {
-              body = const Text('Load Failed!Click retry!');
+              body = const Text('Load Failed! Click retry!');
             } else if (mode == LoadStatus.canLoading) {
               body = const Text('release to load more');
             } else {

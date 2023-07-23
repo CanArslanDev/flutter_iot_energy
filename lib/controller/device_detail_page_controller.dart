@@ -28,11 +28,19 @@ class DeviceDetailPageController extends BaseController {
   Rx<bool> active = false.obs;
   Rx<bool> power = false.obs;
   Rx<int> watt = 0.obs;
-  bool initialize=false;
+  bool initialize = false;
+  int deviceType = 0;
+  String deviceDataId = '';
 
-  void initializeId(String id) {
-    initialize=true;
+  void initializeId(
+    String id,
+    int type,
+    String dataIdNumber,
+  ) {
+    initialize = true;
     deviceId = id;
+    deviceType = type;
+    deviceDataId = dataIdNumber;
     _deviceRef = FirebaseDatabase.instance.ref().child('devices/$id');
     _deviceSubscription = _deviceRef.onValue.listen((event) {
       if (event.snapshot.value != null) {
@@ -72,11 +80,11 @@ class DeviceDetailPageController extends BaseController {
     await FirebaseService().setDevicePower(deviceId, !power.value ? 0 : -1);
   }
 
-  void returnBackPage(){
+  void returnBackPage() {
     Get.back<Object>();
   }
 
-  void routeAddScenePage(){
-    Get.toNamed<Object>('add-scene-page');
+  void routeAddScenePage() {
+    Get.toNamed<Object>('scene-page');
   }
 }

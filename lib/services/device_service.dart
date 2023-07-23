@@ -2,9 +2,9 @@
 
 class DeviceService {
   String getTypeIntToString(int type) {
-    if (type == 1) {
+    if (type == 0) {
       return 'battery';
-    } else if (type == 2) {
+    } else if (type == 1) {
       return 'plug';
     } else {
       return 'other';

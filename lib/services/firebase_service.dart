@@ -229,4 +229,26 @@ class FirebaseService {
     }
     return totalVoltage;
   }
+
+  Future<void> setDatabaseScene(
+    String accountId,
+    String deviceDataId,
+    int deviceType,
+    int hour,
+    int minute,
+    int day,
+    int plan,
+  ) async {
+    final sceneRef = FirebaseFirestore.instance
+        .collection('users/$accountId/devices/$deviceDataId/scenes');
+
+    await sceneRef.add({
+      'deviceType': deviceType,
+      'hour': hour,
+      'minute': minute,
+      'day': day,
+      'plan': plan,
+      'enable': true,
+    });
+  }
 }

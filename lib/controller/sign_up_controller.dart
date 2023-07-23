@@ -22,11 +22,11 @@ class SignUpController extends BaseController {
         phoneFieldController.text == '' ||
         passwordFieldController.text == '' ||
         passwordAgainFieldController.text == '') {
-      showInformationSnackbar('Error', 'Please fill in all fields');
+      showErrorSnackbar('Error', 'Please fill in all fields');
       return;
     } else if (passwordFieldController.text !=
         passwordAgainFieldController.text) {
-      showInformationSnackbar('Error', 'Passwords do not match');
+      showErrorSnackbar('Error', 'Passwords do not match');
       return;
     }
     try {
@@ -39,7 +39,7 @@ class SignUpController extends BaseController {
           )
           .then((value) => Get.offAndToNamed<Object>(Routes.signInPage));
     } on FirebaseAuthException catch (error) {
-      showInformationSnackbar('Error', error.message.toString());
+      showErrorSnackbar('Error', error.message.toString());
     }
   }
 }

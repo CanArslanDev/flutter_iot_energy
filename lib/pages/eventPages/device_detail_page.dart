@@ -12,15 +12,19 @@ class DeviceDetailPage extends GetView<DeviceDetailPageController> {
   const DeviceDetailPage({super.key});
   @override
   Widget build(BuildContext context) {
-   if(controller.initialize==false) {
-    controller.initializeId(((Get.arguments as List)[0]as Object) as String);
-   }
+    if (controller.initialize == false) {
+      controller.initializeId(
+        ((Get.arguments as List)[0] as Object) as String,
+        ((Get.arguments as List)[1] as Object) as int,
+        ((Get.arguments as List)[2] as Object) as String,
+      );
+    }
     return Scaffold(
       backgroundColor: Theme.of(Get.context!).colorScheme.onBackground,
       body: Container(
-          height: 100.h,
-          width: 100.w,
-          decoration: backgroundDecoration,
+        height: 100.h,
+        width: 100.w,
+        decoration: backgroundDecoration,
         child: SafeArea(
           child: SingleChildScrollView(
             child: Column(
@@ -394,7 +398,7 @@ class DeviceDetailPage extends GetView<DeviceDetailPageController> {
                 Padding(
                   padding: EdgeInsets.only(left: 3.w),
                   child: GestureDetector(
-                    onTap: ()=>controller.returnBackPage(),
+                    onTap: () => controller.returnBackPage(),
                     child: Container(
                       width: 13.5.w,
                       height: 13.5.w,

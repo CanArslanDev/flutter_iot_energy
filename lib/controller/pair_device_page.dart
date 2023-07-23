@@ -11,12 +11,13 @@ import 'package:get/get.dart';
 class PairDevicePageController extends BaseController {
   final nameFieldController = TextEditingController();
   final deviceFieldController = TextEditingController();
-  Rx<int> buttonType = 1.obs;
+  Rx<int> buttonType = 0.obs;
   Rx<bool> findingDevice = false.obs;
   Future<void> findDevice() async {
     if (nameFieldController.text == '' || deviceFieldController.text == '') {
-      return showInformationSnackbar('Error', 'Please fill in all fields');
+      return showErrorSnackbar('Error', 'Please fill in all fields');
     }
+    Get.closeAllSnackbars();
     findingDevice.value = true;
     if (await FirebaseService().getDeviceFound(
           deviceFieldController.text,
@@ -34,7 +35,7 @@ class PairDevicePageController extends BaseController {
       Get.back<Object>();
     } else {
       findingDevice.value = false;
-      showInformationSnackbar(
+      showErrorSnackbar(
         'Error',
         'No device found matching this ID or Type.',
       );

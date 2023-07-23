@@ -65,6 +65,8 @@ class _BuilderHomePageDeviceState extends State<BuilderHomePageDevice> {
                       //     : false;
                       return buildBox(
                           doc['deviceId'] as String,
+                          doc.id,
+                          doc['deviceType'] as int,
                           alignment
                               ? Alignment.centerRight
                               : Alignment.centerLeft,
@@ -113,6 +115,8 @@ class _BuilderHomePageDeviceState extends State<BuilderHomePageDevice> {
 
   Widget buildBox(
     String deviceId,
+    String dataId,
+    int deviceType,
     Alignment align,
     String title,
     String desc,
@@ -127,8 +131,10 @@ class _BuilderHomePageDeviceState extends State<BuilderHomePageDevice> {
       padding:
           EdgeInsets.only(top: 1.5.w, bottom: 1.w, left: 1.5.w, right: 1.5.w),
       child: GestureDetector(
-        onTap: () =>
-            Get.toNamed<Object>(Routes.deviceDetailPage, arguments: [deviceId]),
+        onTap: () => Get.toNamed<Object>(
+          Routes.deviceDetailPage,
+          arguments: [deviceId, deviceType, dataId],
+        ),
         child: Container(
           width: 44.5.w,
           height: 48.w,

@@ -31,7 +31,7 @@ class SignInController extends BaseController {
 
   Future<void> signIn() async {
     if (emailFieldController.text == '' || passwordFieldController.text == '') {
-      showInformationSnackbar('Error', 'Please fill in all fields');
+      showErrorSnackbar('Error', 'Please fill in all fields');
       return;
     }
     try {
@@ -45,7 +45,7 @@ class SignInController extends BaseController {
         Get.offAndToNamed<Object>(Routes.mainPage);
       });
     } on FirebaseAuthException catch (error) {
-      showInformationSnackbar('Error', error.message.toString());
+      showErrorSnackbar('Error', error.message.toString());
     }
   }
 
@@ -56,7 +56,7 @@ class SignInController extends BaseController {
         Get.offAndToNamed<Object>(Routes.mainPage);
       });
     } on FirebaseAuthException catch (error) {
-      showInformationSnackbar('Error', error.message.toString());
+      showErrorSnackbar('Error', error.message.toString());
     }
   }
 
@@ -65,7 +65,7 @@ class SignInController extends BaseController {
       await AuthService().resetPasswordEmail(email);
       recoveryPasswordSended.value = true;
     } on FirebaseAuthException catch (error) {
-      showInformationSnackbar('Error', error.message.toString());
+      showErrorSnackbar('Error', error.message.toString());
     }
   }
 
