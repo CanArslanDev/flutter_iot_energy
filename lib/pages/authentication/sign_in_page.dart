@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_iot_energy/controller/sign_in_controller.dart';
+import 'package:flutter_iot_energy/controller/auth/sign_in_controller.dart';
 import 'package:flutter_iot_energy/routes/routes.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:get/get.dart';

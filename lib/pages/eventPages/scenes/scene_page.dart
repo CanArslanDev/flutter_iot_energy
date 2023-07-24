@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_iot_energy/builders/scene_page_scene_builder.dart';
-import 'package:flutter_iot_energy/controller/scene_page_controller.dart';
+import 'package:flutter_iot_energy/controller/scenes/scene_page_controller.dart';
 import 'package:flutter_iot_energy/ui/text_style.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:get/get.dart';

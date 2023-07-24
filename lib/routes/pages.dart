@@ -1,16 +1,18 @@
-import 'package:flutter_iot_energy/bindings/add_scene_page_binding.dart';
-import 'package:flutter_iot_energy/bindings/device_detail_page_binding.dart';
+import 'package:flutter_iot_energy/bindings/auth/sign_in_binding.dart';
+import 'package:flutter_iot_energy/bindings/auth/sign_up_binding.dart';
+import 'package:flutter_iot_energy/bindings/device/device_detail_page_binding.dart';
+import 'package:flutter_iot_energy/bindings/device/pair_device_page_binding.dart';
 import 'package:flutter_iot_energy/bindings/main_page_binding.dart';
-import 'package:flutter_iot_energy/bindings/pair_device_page_binding.dart';
-import 'package:flutter_iot_energy/bindings/scene_page_binding.dart';
-import 'package:flutter_iot_energy/bindings/sign_in_binding.dart';
-import 'package:flutter_iot_energy/bindings/sign_up_binding.dart';
+import 'package:flutter_iot_energy/bindings/scenes/add_scene_page_binding.dart';
+import 'package:flutter_iot_energy/bindings/scenes/edit_scene_page_binding.dart';
+import 'package:flutter_iot_energy/bindings/scenes/scene_page_binding.dart';
 import 'package:flutter_iot_energy/pages/authentication/sign_in_page.dart';
 import 'package:flutter_iot_energy/pages/authentication/sign_up_page.dart';
-import 'package:flutter_iot_energy/pages/eventPages/add_scene_page.dart';
-import 'package:flutter_iot_energy/pages/eventPages/device_detail_page.dart';
-import 'package:flutter_iot_energy/pages/eventPages/pair_device_page.dart';
-import 'package:flutter_iot_energy/pages/eventPages/scene_page.dart';
+import 'package:flutter_iot_energy/pages/eventPages/device/device_detail_page.dart';
+import 'package:flutter_iot_energy/pages/eventPages/device/pair_device_page.dart';
+import 'package:flutter_iot_energy/pages/eventPages/scenes/add_scene_page.dart';
+import 'package:flutter_iot_energy/pages/eventPages/scenes/edit_scene_page.dart';
+import 'package:flutter_iot_energy/pages/eventPages/scenes/scene_page.dart';
 import 'package:flutter_iot_energy/pages/main_pages/main_page.dart';
 import 'package:flutter_iot_energy/routes/routes.dart';
 import 'package:get/get_navigation/src/routes/get_route.dart';
@@ -51,6 +53,11 @@ abstract class Pages {
       name: Routes.scenePage,
       page: () => const ScenePage(),
       binding: ScenePageBinding(),
+    ),
+    GetPage(
+      name: Routes.editScenePage,
+      page: () => const EditScenePage(),
+      binding: EditScenePageBinding(),
     ),
   ];
 }

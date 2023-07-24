@@ -6,4 +6,5 @@ abstract class Routes {
   static const String deviceDetailPage = '/device-detail-page';
   static const String addScenePage = '/add-scene-page';
   static const String scenePage = '/scene-page';
+  static const String editScenePage = '/edit-scene-page';
 }

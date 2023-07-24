@@ -1,7 +1,7 @@
 // ignore_for_file: unnecessary_overrides, public_member_api_docs
 
 import 'package:flutter_iot_energy/controller/base_controller.dart';
-import 'package:flutter_iot_energy/controller/device_detail_page_controller.dart';
+import 'package:flutter_iot_energy/controller/device/device_detail_page_controller.dart';
 import 'package:flutter_iot_energy/services/firebase_service.dart';
 import 'package:flutter_iot_energy/services/value_service.dart';
 import 'package:flutter_iot_energy/ui_alerts/get_snackbar.dart';
