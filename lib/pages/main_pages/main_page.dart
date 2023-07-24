@@ -40,8 +40,11 @@ class _MainPageState extends State<MainPage> {
                 begin: Alignment.bottomCenter,
                 end: Alignment.topCenter,
                 colors: [
-                  Colors.white,
-                  Colors.white.withOpacity(0),
+                  Theme.of(Get.context!).colorScheme.onBackground,
+                  Theme.of(Get.context!)
+                      .colorScheme
+                      .onBackground
+                      .withOpacity(0),
                 ],
               ),
             ),
@@ -55,12 +58,15 @@ class _MainPageState extends State<MainPage> {
                 ),
                 child: GNav(
                   gap: 12,
-                  activeColor: Colors.white,
+                  activeColor: Theme.of(Get.context!).colorScheme.onBackground,
                   iconSize: 24,
                   padding:
                       const EdgeInsets.symmetric(horizontal: 15, vertical: 12),
                   duration: const Duration(milliseconds: 400),
-                  tabBackgroundColor: Colors.white.withOpacity(0.07),
+                  tabBackgroundColor: Theme.of(Get.context!)
+                      .colorScheme
+                      .onBackground
+                      .withOpacity(0.07),
                   color:
                       Theme.of(Get.context!).colorScheme.onSecondaryContainer,
                   tabs: const [

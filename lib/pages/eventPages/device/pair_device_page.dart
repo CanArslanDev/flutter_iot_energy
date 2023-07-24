@@ -381,7 +381,7 @@ class PairDevicePage extends GetView<PairDevicePageController> {
             height: 40.w,
             width: 90.w,
             decoration: BoxDecoration(
-              color: Colors.white,
+              color: Theme.of(Get.context!).colorScheme.onBackground,
               borderRadius: BorderRadius.circular(20),
               boxShadow: [
                 BoxShadow(
@@ -399,7 +399,7 @@ class PairDevicePage extends GetView<PairDevicePageController> {
                   end: Alignment.bottomCenter,
                   colors: [
                     Theme.of(Get.context!).colorScheme.primary,
-                    Colors.white.withOpacity(0)
+                    Theme.of(Get.context!).colorScheme.onTertiary.withOpacity(0)
                   ],
                 ),
               ),

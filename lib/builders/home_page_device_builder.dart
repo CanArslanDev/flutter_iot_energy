@@ -140,7 +140,7 @@ class _BuilderHomePageDeviceState extends State<BuilderHomePageDevice> {
           height: 48.w,
           decoration: BoxDecoration(
             borderRadius: BorderRadius.circular(20),
-            color: Colors.white,
+            color: Theme.of(Get.context!).colorScheme.onBackground,
             boxShadow: [
               BoxShadow(
                 color: Theme.of(Get.context!)
@@ -164,7 +164,10 @@ class _BuilderHomePageDeviceState extends State<BuilderHomePageDevice> {
                   Theme.of(Get.context!).colorScheme.tertiary.withOpacity(0.7),
                   Theme.of(Get.context!).colorScheme.tertiary.withOpacity(0.4),
                   Theme.of(Get.context!).colorScheme.tertiary.withOpacity(0.3),
-                  Colors.white.withOpacity(0),
+                  Theme.of(Get.context!)
+                      .colorScheme
+                      .onBackground
+                      .withOpacity(0),
                 ],
               ),
             ),

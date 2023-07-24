@@ -176,7 +176,7 @@ class HomePage extends GetView<HomePageController> {
         child: Align(
           alignment: Alignment.centerLeft,
           child: Text(
-            'Batteries',
+            'Devices',
             style: GoogleFonts.inter(
               color: Theme.of(Get.context!).colorScheme.secondary,
               fontWeight: FontWeight.bold,

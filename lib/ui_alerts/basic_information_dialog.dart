@@ -25,7 +25,10 @@ void dialogInformation(BuildContext context, String title, String description) {
               gradient: LinearGradient(
                 begin: Alignment.topCenter,
                 end: Alignment.bottomCenter,
-                colors: [Theme.of(context).colorScheme.primary, Colors.white],
+                colors: [
+                  Theme.of(context).colorScheme.primary,
+                  Theme.of(Get.context!).colorScheme.onBackground
+                ],
               ),
             ),
           ),
