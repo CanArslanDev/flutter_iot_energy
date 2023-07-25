@@ -10,3 +10,5 @@ Yapılacaklar
 - device scenes builder yapılacak
 - senaryo değiştirme eklenecek
 - device detail scenes kısmı düzenlenecek
+- hızlı hızlı scene ekleyince totalscenecount kayıyor.
+- delete scene snackbar kaldırdım sayfada geri gitmiyordu bi ara eklenecek.

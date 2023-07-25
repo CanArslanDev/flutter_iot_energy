@@ -12,12 +12,12 @@ class DeviceDetailPageController extends BaseController {
 //   }
   @override
   void onClose() {
-    _deviceSubscription.cancel();
+    deviceSubscription.cancel();
     super.onClose();
   }
 
   late DatabaseReference _deviceRef;
-  late StreamSubscription<Object> _deviceSubscription;
+  late StreamSubscription<Object> deviceSubscription;
   String deviceId = '';
   Rx<double> voltage = 0.0.obs;
   Rx<int> ampere = 0.obs;
@@ -40,7 +40,24 @@ class DeviceDetailPageController extends BaseController {
     deviceType = type;
     deviceDataId = dataIdNumber;
     _deviceRef = FirebaseDatabase.instance.ref().child('devices/$id');
-    _deviceSubscription = _deviceRef.onValue.listen((event) {
+    streamListen();
+  }
+
+  Future<void> changePowerStatus() async {
+    await FirebaseService().setDevicePower(deviceId, !power.value ? 0 : -1);
+  }
+
+  void returnBackPage() {
+    Get.back<Object>();
+  }
+
+  void routeAddScenePage() {
+    streamCancel();
+    Get.toNamed<Object>('scene-page');
+  }
+
+  void streamListen() {
+    deviceSubscription = _deviceRef.onValue.listen((event) {
       if (event.snapshot.value != null) {
         final data = event.snapshot.value! as Map;
         voltage.value = data['voltage'] as double;
@@ -74,15 +91,7 @@ class DeviceDetailPageController extends BaseController {
     });
   }
 
-  Future<void> changePowerStatus() async {
-    await FirebaseService().setDevicePower(deviceId, !power.value ? 0 : -1);
-  }
-
-  void returnBackPage() {
-    Get.back<Object>();
-  }
-
-  void routeAddScenePage() {
-    Get.toNamed<Object>('scene-page');
+  void streamCancel() {
+    deviceSubscription.cancel();
   }
 }

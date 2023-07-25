@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_iot_energy/controller/device/pair_device_page.dart';
+import 'package:flutter_iot_energy/controller/device/pair_device_page_controller.dart';
 import 'package:get/get.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:gradient_borders/box_borders/gradient_box_border.dart';

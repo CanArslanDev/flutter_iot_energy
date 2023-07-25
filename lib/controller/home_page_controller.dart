@@ -23,7 +23,6 @@ class HomePageController extends BaseController {
   void navigatePairPage() {
     Get.toNamed<Object>(
       Routes.pairDevicePage,
-      arguments: ['First data', 'Second data'],
     );
   }
 

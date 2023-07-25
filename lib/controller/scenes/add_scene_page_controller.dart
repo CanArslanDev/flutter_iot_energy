@@ -22,7 +22,7 @@ class AddScenePageController extends BaseController {
   Future<void> saveSceneButton() async {
     loading.value = true;
     final controller = Get.put(DeviceDetailPageController());
-    await FirebaseService().setDeviceScene(
+    await FirebaseService().addDeviceScene(
       accountId,
       controller.deviceDataId,
       controller.deviceId,

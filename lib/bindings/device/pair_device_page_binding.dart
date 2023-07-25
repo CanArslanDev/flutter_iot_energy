@@ -1,4 +1,4 @@
-import 'package:flutter_iot_energy/controller/device/pair_device_page.dart';
+import 'package:flutter_iot_energy/controller/device/pair_device_page_controller.dart';
 import 'package:get/get.dart';
 
 ///Paire Device Binding For Getx

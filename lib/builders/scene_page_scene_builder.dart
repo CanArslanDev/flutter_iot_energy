@@ -35,6 +35,18 @@ class BuilderScenePageScene extends StatelessWidget {
                 doc['hour'] as int,
                 doc['minute'] as int,
                 doc['enable'] as bool,
+                doc,
+                () {
+                  final controller = Get.put(DeviceDetailPageController());
+                  Get.toNamed<Object>(
+                    'edit-scene-page',
+                    arguments: [
+                      controller.deviceDataId,
+                      doc.id,
+                      doc,
+                    ],
+                  );
+                },
               );
             }).toList(),
           );
@@ -49,9 +61,11 @@ class BuilderScenePageScene extends StatelessWidget {
     int hour,
     int minute,
     dynamic enable,
+    QueryDocumentSnapshot<Object?> doc,
+    void Function()? onTap,
   ) {
     return GestureDetector(
-      onTap: () => Get.toNamed<Object>('edit-scene-page'),
+      onTap: onTap,
       child: Container(
         padding: EdgeInsets.symmetric(horizontal: 4.w, vertical: 3.w),
         margin: EdgeInsets.symmetric(vertical: 1.w),

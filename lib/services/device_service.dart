@@ -19,3 +19,13 @@ class DeviceService {
     }
   }
 }
+
+int getStringToPlan(String plan) {
+  if (plan == 'Wake up plan') {
+    return 0;
+  } else if (plan == 'Sleep plan') {
+    return 1;
+  } else {
+    return 2;
+  }
+}

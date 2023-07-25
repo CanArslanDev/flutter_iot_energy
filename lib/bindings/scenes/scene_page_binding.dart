@@ -5,6 +5,6 @@ import 'package:get/get.dart';
 class ScenePageBinding extends Bindings {
   @override
   void dependencies() {
-    Get.lazyPut(ScenePageController.new);
+    Get.put(ScenePageController());
   }
 }

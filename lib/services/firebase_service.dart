@@ -52,7 +52,6 @@ class FirebaseService {
     return 0;
   }
 
-  ///add Device Firebase
   Future<void> addDevice(
     String deviceName,
     String deviceId,
@@ -137,6 +136,30 @@ class FirebaseService {
       }
     } else {
       return false;
+    }
+  }
+
+  Future<void> setDeviceSceneList(
+    String id,
+    String sceneId,
+    dynamic added,
+  ) async {
+    var sceneList = '';
+    //Get data
+    final readRef = FirebaseDatabase.instance.ref();
+    final readSnapshot = await readRef.child('devices/$id/sceneList').get();
+    if (readSnapshot.exists) {
+      if (!readSnapshot.value.toString().contains('{')) {
+        sceneList = readSnapshot.value.toString();
+      }
+    }
+    //Set data
+    final writeRef = FirebaseDatabase.instance.ref().child('devices/$id');
+    if (added == true) {
+      await writeRef.update({'sceneList': '$sceneList$sceneId,'});
+    } else {
+      sceneList = sceneList.replaceAll('$sceneId,', '');
+      await writeRef.update({'sceneList': sceneList});
     }
   }
 
@@ -230,7 +253,7 @@ class FirebaseService {
     return totalVoltage;
   }
 
-  Future<void> setDeviceScene(
+  Future<void> addDeviceScene(
     String accountId,
     String deviceDataId,
     String deviceId,
@@ -241,14 +264,7 @@ class FirebaseService {
     int plan,
   ) async {
 // get-set scene count firestore database
-    final getCountCollection =
-        FirebaseFirestore.instance.collection('users/$accountId/devices');
-    final docSnapshot = await getCountCollection.doc(deviceDataId).get();
-    final getCountdata = docSnapshot.data();
-    final totalSceneCount = (getCountdata?['totalSceneCount'] as int) + 1;
-    await getCountCollection
-        .doc(deviceDataId)
-        .update({'totalSceneCount': totalSceneCount});
+    final totalSceneCount = await setDeviceIncreaseSceneCount(deviceDataId);
 
 //set list
 
@@ -268,7 +284,7 @@ class FirebaseService {
       'day': day,
       'plan': plan,
       'enable': true,
-      'timestamp': DateTime.now().toString()
+      'timestamp': DateTime.now().toString(),
     };
 
 //set scene firestore database
@@ -283,6 +299,31 @@ class FirebaseService {
         .child('devices/$deviceId/scene_$totalSceneCount');
 
     await sceneRealtimeRef.update(listRealtimeDatabase);
+    await setDeviceSceneList(deviceId, 'scene_$totalSceneCount', true);
+  }
+
+  Future<int> setDeviceIncreaseSceneCount(String deviceDataId) async {
+    final getCountCollection =
+        FirebaseFirestore.instance.collection('users/$accountId/devices');
+    final docSnapshot = await getCountCollection.doc(deviceDataId).get();
+    final getCountdata = docSnapshot.data();
+    final totalSceneCount = (getCountdata?['totalSceneCount'] as int) + 1;
+    await getCountCollection
+        .doc(deviceDataId)
+        .update({'totalSceneCount': totalSceneCount});
+    return totalSceneCount;
+  }
+
+  Future<int> setDeviceDecreaseSceneCount(String deviceDataId) async {
+    final getCountCollection =
+        FirebaseFirestore.instance.collection('users/$accountId/devices');
+    final docSnapshot = await getCountCollection.doc(deviceDataId).get();
+    final getCountdata = docSnapshot.data();
+    final totalSceneCount = (getCountdata?['totalSceneCount'] as int) - 1;
+    await getCountCollection
+        .doc(deviceDataId)
+        .update({'totalSceneCount': totalSceneCount});
+    return totalSceneCount;
   }
 
   Future<void> setDeviceSceneEnableValue(
@@ -294,8 +335,66 @@ class FirebaseService {
         .collection('users/$accountId/devices/$deviceId/scenes/')
         .doc(sceneId);
     final sceneRealtimeRef =
-        FirebaseDatabase.instance.ref().child('devices/$deviceId/scene_1');
+        FirebaseDatabase.instance.ref().child('devices/$deviceId/$sceneId');
     await sceneRealtimeRef.update({'enable': value});
     await sceneRef.update({'enable': value});
+  }
+
+  Future<void> setDeviceSceneClockValue(
+    String deviceId,
+    String sceneId,
+    int hour,
+    int minute,
+  ) async {
+    final sceneRef = FirebaseFirestore.instance
+        .collection('users/$accountId/devices/$deviceId/scenes/')
+        .doc(sceneId);
+    final sceneRealtimeRef =
+        FirebaseDatabase.instance.ref().child('devices/$deviceId/$sceneId');
+    await sceneRealtimeRef.update({'hour': hour, 'minute': minute});
+    await sceneRef.update({'hour': hour, 'minute': minute});
+  }
+
+  Future<void> setDeviceScenePlanValue(
+    String deviceId,
+    String sceneId,
+    int value,
+  ) async {
+    final sceneRef = FirebaseFirestore.instance
+        .collection('users/$accountId/devices/$deviceId/scenes/')
+        .doc(sceneId);
+    final sceneRealtimeRef =
+        FirebaseDatabase.instance.ref().child('devices/$deviceId/$sceneId');
+    await sceneRealtimeRef.update({
+      'plan': value,
+    });
+    await sceneRef.update({
+      'plan': value,
+    });
+  }
+
+  Future<Map<String, dynamic>?> getDeviceScene(
+    String deviceId,
+    String sceneId,
+  ) async {
+    final sceneRef = FirebaseFirestore.instance
+        .collection('users/$accountId/devices/$deviceId/scenes/');
+    final sceneRefSnapshot = await sceneRef.doc(sceneId).get();
+    return sceneRefSnapshot.data();
+  }
+
+  Future<void> deleteDeviceScene(
+    String deviceId,
+    String sceneId,
+  ) async {
+    final sceneRef = FirebaseFirestore.instance
+        .collection('users/$accountId/devices/$deviceId/scenes/');
+    await sceneRef.doc(sceneId).delete();
+
+    final sceneRealtimeRef =
+        FirebaseDatabase.instance.ref().child('devices/$deviceId');
+    await sceneRealtimeRef.child(sceneId).remove();
+    await setDeviceDecreaseSceneCount(deviceId);
+    await setDeviceSceneList(deviceId, sceneId, false);
   }
 }
