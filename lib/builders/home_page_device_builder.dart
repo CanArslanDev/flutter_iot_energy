@@ -54,12 +54,13 @@ class _BuilderHomePageDeviceState extends State<BuilderHomePageDevice> {
                   builder:
                       (context, AsyncSnapshot<Map<String, dynamic>> snapshot) {
                     if (snapshot.hasData) {
-                      final voltage = snapshot.data!['voltage'] as double;
+                      var voltage = snapshot.data!['voltage'] as double;
+                      voltage = double.parse(voltage.toStringAsFixed(2));
                       final watt = snapshot.data!['watt'] as int;
                       final ampere = snapshot.data!['ampere'] as int;
                       final percentage = snapshot.data!['percentage'] as int;
                       final power = snapshot.data!['power'] as bool;
-                      const date = false;
+                      final date = snapshot.data!['date'] as bool;
                       // final date = snapshot.data!['date'].toString() == 'true
                       //     ? true
                       //     : false;
@@ -310,16 +311,9 @@ class _BuilderHomePageDeviceState extends State<BuilderHomePageDevice> {
                         )
                       ],
                     ),
-                    Container(
+                    SizedBox(
                       height: 7.w,
                       width: 15.w,
-                      decoration: BoxDecoration(
-                        borderRadius: BorderRadius.circular(50),
-                        color: Theme.of(Get.context!)
-                            .colorScheme
-                            .onTertiary
-                            .withOpacity(0.1),
-                      ),
                       child: Transform.scale(
                         scale: 0.9,
                         child: CupertinoSwitch(

@@ -28,7 +28,7 @@ class DeviceDetailPage extends GetView<DeviceDetailPageController> {
             child: Column(
               children: [
                 appbar('Plug', 'Device 1'),
-                topBody(5),
+                topBody,
                 plugIcon,
                 centerBody,
               ],
@@ -216,36 +216,92 @@ class DeviceDetailPage extends GetView<DeviceDetailPageController> {
                   padding: EdgeInsets.only(top: 2.w),
                   child: GestureDetector(
                     onTap: () => controller.routeAddScenePage(),
-                    child: Container(
-                      height: 9.5.w,
-                      decoration: BoxDecoration(
-                        color: Theme.of(Get.context!).colorScheme.onBackground,
-                        borderRadius: BorderRadius.circular(4.w),
-                        border: const GradientBoxBorder(
-                          gradient: LinearGradient(
-                            colors: [Colors.blue, Colors.pink],
-                            begin: Alignment.topCenter,
-                            end: Alignment.bottomCenter,
-                          ),
-                          width: 1.5,
-                        ),
-                      ),
-                      child: SizedBox(
-                        width: 32.w,
-                        child: Center(
-                          child: Text(
-                            'Create Scene',
-                            style: GoogleFonts.inter(
-                              height: 1,
-                              color: Theme.of(Get.context!)
-                                  .colorScheme
-                                  .onTertiary
-                                  .withOpacity(0.8),
-                              fontWeight: FontWeight.w900,
-                              fontSize: 4.w,
-                            ),
-                          ),
-                        ),
+                    child: Obx(
+                      () => AnimatedOpacity(
+                        duration: const Duration(seconds: 1),
+                        opacity:
+                            controller.totalSceneCount.value == 1000 ? 0 : 1,
+                        child: controller.totalSceneCount.value == 1000
+                            ? SizedBox(
+                                height: 9.5.w,
+                              )
+                            : controller.totalSceneCount.value > 0
+                                ? SizedBox(
+                                    width: 38.w,
+                                    child: Center(
+                                      child: Column(
+                                        children: [
+                                          ShaderMask(
+                                            blendMode: BlendMode.srcIn,
+                                            shaderCallback: (bounds) =>
+                                                const LinearGradient(
+                                              colors: [
+                                                Colors.blue,
+                                                Colors.pink
+                                              ],
+                                            ).createShader(
+                                              Rect.fromLTWH(
+                                                0,
+                                                0,
+                                                bounds.width,
+                                                bounds.height,
+                                              ),
+                                            ),
+                                            child: Text(
+                                              '''${controller.totalSceneCount.value} Active Scene''',
+                                              style: GoogleFonts.inter(
+                                                fontWeight: FontWeight.bold,
+                                                fontSize: 5.w,
+                                              ),
+                                            ),
+                                          ),
+                                          Text(
+                                            'View Detail',
+                                            style: GoogleFonts.inter(
+                                                fontWeight: FontWeight.bold,
+                                                fontSize: 3.5.w,
+                                                color: Theme.of(Get.context!)
+                                                    .colorScheme
+                                                    .tertiary),
+                                          ),
+                                        ],
+                                      ),
+                                    ),
+                                  )
+                                : Container(
+                                    height: 9.5.w,
+                                    decoration: BoxDecoration(
+                                      color: Theme.of(Get.context!)
+                                          .colorScheme
+                                          .onBackground,
+                                      borderRadius: BorderRadius.circular(4.w),
+                                      border: const GradientBoxBorder(
+                                        gradient: LinearGradient(
+                                          colors: [Colors.blue, Colors.pink],
+                                          begin: Alignment.topCenter,
+                                          end: Alignment.bottomCenter,
+                                        ),
+                                        width: 1.5,
+                                      ),
+                                    ),
+                                    child: SizedBox(
+                                      width: 32.w,
+                                      child: Center(
+                                        child: Text(
+                                          'Create Scene',
+                                          style: GoogleFonts.inter(
+                                            height: 1,
+                                            color: Theme.of(Get.context!)
+                                                .colorScheme
+                                                .onTertiary
+                                                .withOpacity(0.8),
+                                            fontWeight: FontWeight.w900,
+                                            fontSize: 4.w,
+                                          ),
+                                        ),
+                                      ),
+                                    ),
+                                  ),
                       ),
                     ),
                   ),
@@ -286,7 +342,7 @@ class DeviceDetailPage extends GetView<DeviceDetailPageController> {
     );
   }
 
-  Widget topBody(int voltage) {
+  Widget get topBody {
     Container buttonWidget(
       Widget icon,
       String title,
@@ -370,14 +426,16 @@ class DeviceDetailPage extends GetView<DeviceDetailPageController> {
             'Active',
             Theme.of(Get.context!).colorScheme.tertiary,
           ),
-          buttonWidget(
-            Image.asset(
-              'assets/images/logo_icon.png',
-              width: 7.w,
+          Obx(
+            () => buttonWidget(
+              Image.asset(
+                'assets/images/logo_icon.png',
+                width: 7.w,
+              ),
+              'Voltage',
+              '${controller.voltage.value}V',
+              Theme.of(Get.context!).colorScheme.primary,
             ),
-            'Voltage',
-            '${voltage}V',
-            Theme.of(Get.context!).colorScheme.primary,
           ),
         ],
       ),

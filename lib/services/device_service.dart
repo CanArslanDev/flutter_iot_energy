@@ -18,14 +18,26 @@ class DeviceService {
       return 'Other plan';
     }
   }
-}
 
-int getStringToPlan(String plan) {
-  if (plan == 'Wake up plan') {
-    return 0;
-  } else if (plan == 'Sleep plan') {
-    return 1;
-  } else {
-    return 2;
+  int getStringToPlan(String plan) {
+    if (plan == 'Wake up plan') {
+      return 0;
+    } else if (plan == 'Sleep plan') {
+      return 1;
+    } else {
+      return 2;
+    }
+  }
+
+  bool calculateOnlineDevice(DateTime recentTime, DateTime nowTime) {
+    if (recentTime.year == nowTime.year &&
+        recentTime.month == nowTime.month &&
+        recentTime.day == nowTime.day &&
+        recentTime.hour == nowTime.hour &&
+        nowTime.minute - 2 <= recentTime.minute) {
+      return true;
+    } else {
+      return false;
+    }
   }
 }

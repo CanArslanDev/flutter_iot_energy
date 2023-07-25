@@ -3,6 +3,7 @@ import 'dart:async';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter_iot_energy/controller/base_controller.dart';
 import 'package:flutter_iot_energy/services/firebase_service.dart';
+import 'package:flutter_iot_energy/ui_alerts/get_snackbar.dart';
 import 'package:get/get.dart';
 
 class EditScenePageController extends BaseController {
@@ -63,9 +64,12 @@ class EditScenePageController extends BaseController {
   }
 
   Future<void> deleteScene() async {
-    Get.closeAllSnackbars();
     loading.value = true;
     await firebase.deleteDeviceScene(deviceId, sceneId);
-    Get.back<Object>();
+    Get.back<Object>(closeOverlays: true);
+    showErrorSnackbar(
+      'Scene Removed',
+      'The scene has been removed to your device',
+    );
   }
 }

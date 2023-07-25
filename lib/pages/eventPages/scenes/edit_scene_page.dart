@@ -185,7 +185,11 @@ class EditScenePage extends GetView<EditScenePageController> {
 
   Widget get deleteScene => Align(
         child: GestureDetector(
-          onTap: () => controller.deleteScene(),
+          onTap: () {
+            if (controller.loading.value == false) {
+              controller.deleteScene();
+            }
+          },
           child: ColoredBox(
             color: Colors.white.withOpacity(0),
             child: Text(

@@ -35,7 +35,7 @@ class AddScenePageController extends BaseController {
     Get.back<Object>();
     showInformationSnackbar(
       'Scene added',
-      'The script has been added to your device',
+      'The scene has been added to your device',
     );
   }
 }

@@ -30,7 +30,7 @@ class PairDevicePageController extends BaseController {
       ValueService().changeTotalDevices(
         await FirebaseService().getTotalDeviceCount(accountId),
       );
-      Get.back<Object>();
+      Get.back<Object>(closeOverlays: true);
     } else {
       findingDevice.value = false;
       showErrorSnackbar(

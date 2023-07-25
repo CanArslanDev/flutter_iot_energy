@@ -8,7 +8,7 @@ import 'package:get/get.dart';
 class ScenePageController extends BaseController {
   @override
   void onClose() {
-    Get.put(DeviceDetailPageController()).streamListen();
+    Get.put(DeviceDetailPageController()).turnPage();
     super.onClose();
   }
 

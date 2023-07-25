@@ -27,19 +27,22 @@ class DeviceDetailPageController extends BaseController {
   Rx<bool> power = false.obs;
   Rx<int> watt = 0.obs;
   bool initialize = false;
+  Rx<int> totalSceneCount = 1000.obs;
   int deviceType = 0;
   String deviceDataId = '';
 
-  void initializeId(
+  Future<void> initializeId(
     String id,
     int type,
     String dataIdNumber,
-  ) {
+  ) async {
     initialize = true;
     deviceId = id;
     deviceType = type;
     deviceDataId = dataIdNumber;
     _deviceRef = FirebaseDatabase.instance.ref().child('devices/$id');
+    totalSceneCount.value =
+        await FirebaseService().getDeviceTotalSceneCount(id);
     streamListen();
   }
 
@@ -60,7 +63,9 @@ class DeviceDetailPageController extends BaseController {
     deviceSubscription = _deviceRef.onValue.listen((event) {
       if (event.snapshot.value != null) {
         final data = event.snapshot.value! as Map;
-        voltage.value = data['voltage'] as double;
+        voltage
+          ..value = data['voltage'] as double
+          ..value = double.parse(voltage.value.toStringAsFixed(2));
         ampere.value = data['ampere'] as int;
         percentage.value = data['percentage'] as int;
         date.value = data['date'] as String;
@@ -89,6 +94,12 @@ class DeviceDetailPageController extends BaseController {
         // print("--------------------------------------");
       }
     });
+  }
+
+  Future<void> turnPage() async {
+    streamListen();
+    totalSceneCount.value =
+        await FirebaseService().getDeviceTotalSceneCount(deviceId);
   }
 
   void streamCancel() {
