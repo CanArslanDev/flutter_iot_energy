@@ -7,8 +7,5 @@ Yapılacaklar
 - add scene information eklenecek
 - ana sayfaya eğer kullanıcıda o idle eşleşen cihaz zaten varsa tekrar ekleyemeyecek
 - ana sayfada cihaz eklenince ana sayfada cihazlar bölümü otomatik güncellenmiyor, güncellenecek
-- device scenes builder yapılacak
-- senaryo değiştirme eklenecek
-- device detail scenes kısmı düzenlenecek
-- hızlı hızlı scene ekleyince totalscenecount kayıyor.
-- delete scene snackbar kaldırdım sayfada geri gitmiyordu bi ara eklenecek.
+- scene page eğer scene yoksa add scene seçeneği çıkacak
+- arduniodan date set edilirken zamanlarda başa sıfır koyuyomu bak
