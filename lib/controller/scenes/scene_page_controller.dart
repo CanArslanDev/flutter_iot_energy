@@ -2,6 +2,7 @@
 
 import 'package:flutter_iot_energy/controller/base_controller.dart';
 import 'package:flutter_iot_energy/controller/device/device_detail_page_controller.dart';
+import 'package:flutter_iot_energy/routes/routes.dart';
 import 'package:get/get.dart';
 
 //Base Controller For Getx
@@ -13,6 +14,6 @@ class ScenePageController extends BaseController {
   }
 
   void routeToAddScenePage() {
-    Get.toNamed<Object>('add-scene-page');
+    Get.toNamed<Object>(Routes.addScenePage);
   }
 }

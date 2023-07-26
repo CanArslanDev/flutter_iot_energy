@@ -2,7 +2,10 @@ import 'dart:async';
 
 import 'package:firebase_database/firebase_database.dart';
 import 'package:flutter_iot_energy/controller/base_controller.dart';
+import 'package:flutter_iot_energy/routes/routes.dart';
+import 'package:flutter_iot_energy/services/device_service.dart';
 import 'package:flutter_iot_energy/services/firebase_service.dart';
+import 'package:flutter_iot_energy/ui_alerts/get_snackbar.dart';
 import 'package:get/get.dart';
 
 class DeviceDetailPageController extends BaseController {
@@ -23,23 +26,26 @@ class DeviceDetailPageController extends BaseController {
   Rx<int> ampere = 0.obs;
   Rx<int> percentage = 0.obs;
   Rx<String> date = ''.obs;
-  Rx<bool> active = false.obs;
+  Rx<bool> active = true.obs;
   Rx<bool> power = false.obs;
   Rx<int> watt = 0.obs;
   bool initialize = false;
   Rx<int> totalSceneCount = 1000.obs;
   int deviceType = 0;
   String deviceDataId = '';
+  String deviceName = '';
 
   Future<void> initializeId(
     String id,
     int type,
     String dataIdNumber,
+    String deviceNameVoid,
   ) async {
     initialize = true;
     deviceId = id;
     deviceType = type;
     deviceDataId = dataIdNumber;
+    deviceName = deviceNameVoid;
     _deviceRef = FirebaseDatabase.instance.ref().child('devices/$id');
     totalSceneCount.value =
         await FirebaseService().getDeviceTotalSceneCount(id);
@@ -47,7 +53,14 @@ class DeviceDetailPageController extends BaseController {
   }
 
   Future<void> changePowerStatus() async {
-    await FirebaseService().setDevicePower(deviceId, !power.value ? 0 : -1);
+    if (active.value) {
+      await FirebaseService().setDevicePower(deviceId, !power.value ? 0 : -1);
+    } else {
+      showErrorSnackbar(
+        'Unable to connect to your device',
+        'Please plug in your device.',
+      );
+    }
   }
 
   void returnBackPage() {
@@ -56,7 +69,7 @@ class DeviceDetailPageController extends BaseController {
 
   void routeAddScenePage() {
     streamCancel();
-    Get.toNamed<Object>('scene-page');
+    Get.toNamed<Object>(Routes.scenePage);
   }
 
   void streamListen() {
@@ -71,18 +84,10 @@ class DeviceDetailPageController extends BaseController {
         date.value = data['date'] as String;
         watt.value = data['watt'] as int;
         power.value = data['power'] as bool;
-
-        final dt = DateTime.parse(data['date'] as String);
-        final dt2 = DateTime.now();
-        if (dt.year == dt2.year &&
-            dt.month == dt2.month &&
-            dt.day == dt2.day &&
-            dt.hour == dt2.hour &&
-            dt2.minute - 2 <= dt.minute) {
-          active.value = true;
-        } else {
-          active.value = false;
-        }
+        active.value = DeviceService().calculateOnlineDevice(
+          DateTime.parse(data['date'] as String),
+          DateTime.now(),
+        );
         // print("--------------------------------------");
         // print('Power: ${power.value} ${power.runtimeType}');
         // print('Active: ${active.value} ${active.runtimeType}');

@@ -20,7 +20,7 @@ class SignInController extends BaseController {
     super.onInit();
     StorageService().getAutomaticSignAuth(
       () {
-        Get.offAndToNamed<Object>(Routes.mainPage);
+        Get.offAllNamed<Object>(Routes.mainPage);
       },
       Get.back<Object>,
       autoLoginDialog,
@@ -40,7 +40,7 @@ class SignInController extends BaseController {
           emailFieldController.text,
           passwordFieldController.text,
         );
-        Get.offAndToNamed<Object>(Routes.mainPage);
+        Get.offAllNamed<Object>(Routes.mainPage);
       });
     } on FirebaseAuthException catch (error) {
       showErrorSnackbar('Error', error.message.toString());
@@ -51,7 +51,7 @@ class SignInController extends BaseController {
     try {
       await AuthService().signInGoogle().then((value) {
         StorageService().setGoogleAuth();
-        Get.offAndToNamed<Object>(Routes.mainPage);
+        Get.offAllNamed<Object>(Routes.mainPage);
       });
     } on FirebaseAuthException catch (error) {
       showErrorSnackbar('Error', error.message.toString());
