@@ -15,6 +15,7 @@ class DeviceDetailPage extends GetView<DeviceDetailPageController> {
         ((Get.arguments as List)[0] as Object) as String,
         ((Get.arguments as List)[1] as Object) as int,
         ((Get.arguments as List)[2] as Object) as String,
+        ((Get.arguments as List)[3] as Object) as String,
       );
     }
     return Scaffold(
@@ -27,7 +28,9 @@ class DeviceDetailPage extends GetView<DeviceDetailPageController> {
           child: SingleChildScrollView(
             child: Column(
               children: [
-                appbar('Plug', 'Device 1'),
+                appbar(
+                  'Plug',
+                ),
                 topBody,
                 plugIcon,
                 centerBody,
@@ -258,11 +261,12 @@ class DeviceDetailPage extends GetView<DeviceDetailPageController> {
                                           Text(
                                             'View Detail',
                                             style: GoogleFonts.inter(
-                                                fontWeight: FontWeight.bold,
-                                                fontSize: 3.5.w,
-                                                color: Theme.of(Get.context!)
-                                                    .colorScheme
-                                                    .tertiary),
+                                              fontWeight: FontWeight.bold,
+                                              fontSize: 3.5.w,
+                                              color: Theme.of(Get.context!)
+                                                  .colorScheme
+                                                  .tertiary,
+                                            ),
                                           ),
                                         ],
                                       ),
@@ -407,42 +411,86 @@ class DeviceDetailPage extends GetView<DeviceDetailPageController> {
 
     return Padding(
       padding: EdgeInsets.only(left: 5.w, right: 5.w, top: 14.w),
-      child: Row(
-        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+      child: Column(
         children: [
-          buttonWidget(
-            Text(
-              String.fromCharCode(CupertinoIcons.power.codePoint),
-              style: TextStyle(
-                inherit: false,
-                color: Theme.of(Get.context!).colorScheme.tertiary,
-                fontSize: 9.w,
-                fontWeight: FontWeight.w900,
-                fontFamily: CupertinoIcons.exclamationmark_circle.fontFamily,
-                package: CupertinoIcons.exclamationmark_circle.fontPackage,
-              ),
-            ),
-            'Status',
-            'Active',
-            Theme.of(Get.context!).colorScheme.tertiary,
-          ),
           Obx(
-            () => buttonWidget(
-              Image.asset(
-                'assets/images/logo_icon.png',
-                width: 7.w,
+            () => AnimatedSize(
+              duration: const Duration(seconds: 2),
+              curve: Curves.fastLinearToSlowEaseIn,
+              child: Container(
+                height: controller.active.value ? 0 : null,
+                margin: EdgeInsets.only(bottom: 4.w),
+                padding: EdgeInsets.symmetric(horizontal: 2.w, vertical: 1.w),
+                decoration: BoxDecoration(
+                  color:
+                      Theme.of(Get.context!).colorScheme.error.withOpacity(0.9),
+                  borderRadius: BorderRadius.circular(10),
+                ),
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Text(
+                      'Failed to connect to device',
+                      style: GoogleFonts.inter(
+                        color: Colors.white,
+                        fontSize: 5.w,
+                        fontWeight: FontWeight.bold,
+                      ),
+                    ),
+                    Text(
+                      '''Please make sure the device is working, if the problem still persists restart the device.''',
+                      style: GoogleFonts.inter(
+                        color: Colors.white,
+                        fontSize: 3.5.w,
+                        fontWeight: FontWeight.bold,
+                      ),
+                    ),
+                  ],
+                ),
               ),
-              'Voltage',
-              '${controller.voltage.value}V',
-              Theme.of(Get.context!).colorScheme.primary,
             ),
+          ),
+          Row(
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            children: [
+              buttonWidget(
+                Text(
+                  String.fromCharCode(CupertinoIcons.power.codePoint),
+                  style: TextStyle(
+                    inherit: false,
+                    color: Theme.of(Get.context!).colorScheme.tertiary,
+                    fontSize: 9.w,
+                    fontWeight: FontWeight.w900,
+                    fontFamily:
+                        CupertinoIcons.exclamationmark_circle.fontFamily,
+                    package: CupertinoIcons.exclamationmark_circle.fontPackage,
+                  ),
+                ),
+                'Status',
+                'Active',
+                Theme.of(Get.context!).colorScheme.tertiary,
+              ),
+              Obx(
+                () => buttonWidget(
+                  Image.asset(
+                    'assets/images/logo_icon.png',
+                    width: 7.w,
+                  ),
+                  'Voltage',
+                  '${controller.voltage.value}V',
+                  Theme.of(Get.context!).colorScheme.primary,
+                ),
+              ),
+            ],
           ),
         ],
       ),
     );
   }
 
-  Widget appbar(String type, String deviceName) {
+  Widget appbar(
+    String type,
+  ) {
     return SizedBox(
       width: 100.w,
       child: Stack(
@@ -499,7 +547,7 @@ class DeviceDetailPage extends GetView<DeviceDetailPageController> {
                     ),
                   ),
                   Text(
-                    deviceName,
+                    controller.deviceName,
                     style: GoogleFonts.inter(
                       color: Theme.of(Get.context!)
                           .colorScheme

@@ -2,6 +2,7 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_iot_energy/controller/device/device_detail_page_controller.dart';
+import 'package:flutter_iot_energy/routes/routes.dart';
 import 'package:flutter_iot_energy/services/device_service.dart';
 import 'package:flutter_iot_energy/services/firebase_service.dart';
 import 'package:flutter_iot_energy/services/value_service.dart';
@@ -39,7 +40,7 @@ class BuilderScenePageScene extends StatelessWidget {
                 () {
                   final controller = Get.put(DeviceDetailPageController());
                   Get.toNamed<Object>(
-                    'edit-scene-page',
+                    Routes.editScenePage,
                     arguments: [
                       controller.deviceDataId,
                       doc.id,

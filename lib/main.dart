@@ -18,6 +18,7 @@ class MyApp extends StatelessWidget {
     return ResponsiveSizer(
       builder: (context, orientation, screenType) {
         return GetMaterialApp(
+          debugShowCheckedModeBanner: false,
           title: 'Energy',
           theme: ThemeData(
             colorScheme: ColorScheme.fromSwatch().copyWith(

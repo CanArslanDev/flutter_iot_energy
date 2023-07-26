@@ -131,7 +131,7 @@ class HomePage extends GetView<HomePageController> {
                 children: [
                   topWidget(
                     controller.accountTotalSceneController.value.toString(),
-                    'Online Scene',
+                    'Total Scene',
                     'assets/images/home_scene_icon.png',
                     13.w,
                     8.w,
@@ -260,6 +260,7 @@ class HomePage extends GetView<HomePageController> {
   }
 
   AppBar get pageAppbar => AppBar(
+        centerTitle: false,
         elevation: 0,
         backgroundColor: Theme.of(Get.context!).colorScheme.onBackground,
         title: Text(
@@ -278,7 +279,7 @@ class HomePage extends GetView<HomePageController> {
           GestureDetector(
             onTap: () => controller.navigatePairPage(),
             child: Padding(
-              padding: EdgeInsets.only(right: 2.4.w, left: 2.4.w, top: 1.5.w),
+              padding: EdgeInsets.only(right: 5.w, left: 2.4.w, top: 1.5.w),
               child: Icon(
                 FontAwesomeIcons.plugCirclePlus,
                 color: Theme.of(Get.context!).colorScheme.onPrimaryContainer,
@@ -286,14 +287,6 @@ class HomePage extends GetView<HomePageController> {
               ),
             ),
           ),
-          Padding(
-            padding: EdgeInsets.only(right: 5.w, left: 2.4.w, top: 1.5.w),
-            child: Icon(
-              FontAwesomeIcons.solidBell,
-              color: Theme.of(Get.context!).colorScheme.onPrimaryContainer,
-              size: 7.w,
-            ),
-          )
         ],
       );
 

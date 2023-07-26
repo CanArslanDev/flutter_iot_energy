@@ -2,8 +2,10 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_iot_energy/routes/routes.dart';
+import 'package:flutter_iot_energy/services/device_service.dart';
 import 'package:flutter_iot_energy/services/firebase_service.dart';
 import 'package:flutter_iot_energy/services/value_service.dart';
+import 'package:flutter_iot_energy/ui_alerts/get_snackbar.dart';
 import 'package:get/get.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:gradient_borders/box_borders/gradient_box_border.dart';
@@ -61,11 +63,14 @@ class _BuilderHomePageDeviceState extends State<BuilderHomePageDevice> {
                       final percentage = snapshot.data!['percentage'] as int;
                       final power = snapshot.data!['power'] as bool;
                       final date = snapshot.data!['date'] as bool;
+                      final charging = snapshot.data!['charging'] as bool;
+                      final type = snapshot.data!['type'] as String;
                       // final date = snapshot.data!['date'].toString() == 'true
                       //     ? true
                       //     : false;
                       return buildBox(
                           doc['deviceId'] as String,
+                          doc['deviceName'] as String,
                           doc.id,
                           doc['deviceType'] as int,
                           alignment
@@ -77,7 +82,8 @@ class _BuilderHomePageDeviceState extends State<BuilderHomePageDevice> {
                           watt,
                           ampere,
                           percentage,
-                          [date, date, if (power) date else power],
+                          DeviceService().getIfRechargable(type, charging),
+                          [date, power],
                           // power
                           //     ? date
                           //         ? power
@@ -116,6 +122,7 @@ class _BuilderHomePageDeviceState extends State<BuilderHomePageDevice> {
 
   Widget buildBox(
     String deviceId,
+    String deviceName,
     String dataId,
     int deviceType,
     Alignment align,
@@ -125,6 +132,7 @@ class _BuilderHomePageDeviceState extends State<BuilderHomePageDevice> {
     int watt,
     int ampere,
     int percentage,
+    dynamic charging,
     List<bool> status,
     VoidCallback callback,
   ) {
@@ -134,7 +142,7 @@ class _BuilderHomePageDeviceState extends State<BuilderHomePageDevice> {
       child: GestureDetector(
         onTap: () => Get.toNamed<Object>(
           Routes.deviceDetailPage,
-          arguments: [deviceId, deviceType, dataId],
+          arguments: [deviceId, deviceType, dataId, deviceName],
         ),
         child: Container(
           width: 44.5.w,
@@ -265,48 +273,68 @@ class _BuilderHomePageDeviceState extends State<BuilderHomePageDevice> {
                           width: 1.2.w,
                           decoration: BoxDecoration(
                             shape: BoxShape.circle,
-                            color: (status[1] == true)
-                                ? Theme.of(Get.context!)
-                                    .colorScheme
-                                    .inverseSurface
-                                : Theme.of(Get.context!).colorScheme.primary,
+                            color: charging == null
+                                ? Theme.of(Get.context!).colorScheme.tertiary
+                                : (charging == true)
+                                    ? Theme.of(Get.context!)
+                                        .colorScheme
+                                        .inverseSurface
+                                    : Theme.of(Get.context!)
+                                        .colorScheme
+                                        .primary,
                           ),
                         ),
                         Padding(
                           padding: EdgeInsets.only(left: 1.w),
                           child: Align(
                             alignment: Alignment.centerLeft,
-                            child: (status[1] == true)
+                            child: charging == null
                                 ? SizedBox(
                                     width: 20.w,
                                     child: Text(
-                                      'Charging ½($percentage)',
+                                      status[1] == true ? 'Enable' : 'Disable',
                                       maxLines: 1,
                                       overflow: TextOverflow.ellipsis,
                                       style: GoogleFonts.inter(
                                         color: Theme.of(Get.context!)
                                             .colorScheme
-                                            .inverseSurface,
+                                            .tertiary,
                                         fontWeight: FontWeight.bold,
                                         fontSize: 3.4.w,
                                       ),
                                     ),
                                   )
-                                : SizedBox(
-                                    width: 20.w,
-                                    child: Text(
-                                      'Charge ½$percentage',
-                                      maxLines: 1,
-                                      overflow: TextOverflow.ellipsis,
-                                      style: GoogleFonts.inter(
-                                        color: Theme.of(Get.context!)
-                                            .colorScheme
-                                            .primary,
-                                        fontWeight: FontWeight.bold,
-                                        fontSize: 3.4.w,
+                                : charging == true
+                                    ? SizedBox(
+                                        width: 20.w,
+                                        child: Text(
+                                          'Charging ½($percentage)',
+                                          maxLines: 1,
+                                          overflow: TextOverflow.ellipsis,
+                                          style: GoogleFonts.inter(
+                                            color: Theme.of(Get.context!)
+                                                .colorScheme
+                                                .inverseSurface,
+                                            fontWeight: FontWeight.bold,
+                                            fontSize: 3.4.w,
+                                          ),
+                                        ),
+                                      )
+                                    : SizedBox(
+                                        width: 20.w,
+                                        child: Text(
+                                          'Charge ½$percentage',
+                                          maxLines: 1,
+                                          overflow: TextOverflow.ellipsis,
+                                          style: GoogleFonts.inter(
+                                            color: Theme.of(Get.context!)
+                                                .colorScheme
+                                                .primary,
+                                            fontWeight: FontWeight.bold,
+                                            fontSize: 3.4.w,
+                                          ),
+                                        ),
                                       ),
-                                    ),
-                                  ),
                           ),
                         )
                       ],
@@ -317,7 +345,7 @@ class _BuilderHomePageDeviceState extends State<BuilderHomePageDevice> {
                       child: Transform.scale(
                         scale: 0.9,
                         child: CupertinoSwitch(
-                          value: status[2],
+                          value: status[1],
                           activeColor: Theme.of(context).colorScheme.tertiary,
                           onChanged: (value) async {
                             if (status[0] == true) {
@@ -325,7 +353,7 @@ class _BuilderHomePageDeviceState extends State<BuilderHomePageDevice> {
                                   .setDevicePower(deviceId, value ? 0 : -1);
                               callback();
                             } else {
-                              Get.snackbar(
+                              showErrorSnackbar(
                                 'Unable to connect to your device',
                                 'Please plug in your device.',
                               );

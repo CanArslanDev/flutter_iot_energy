@@ -9,6 +9,16 @@ class DeviceService {
     }
   }
 
+  int getTypeStringToInt(String type) {
+    if (type == 'battery') {
+      return 0;
+    } else if (type == 'plug') {
+      return 1;
+    } else {
+      return 2;
+    }
+  }
+
   String getPlanIntToString(int type) {
     if (type == 0) {
       return 'Wake up plan';
@@ -38,6 +48,14 @@ class DeviceService {
       return true;
     } else {
       return false;
+    }
+  }
+
+  bool? getIfRechargable(String type, dynamic charging) {
+    if (type == 'plug') {
+      return null;
+    } else {
+      return charging as bool;
     }
   }
 }

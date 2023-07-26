@@ -15,7 +15,7 @@ class HomePageController extends BaseController {
   Future<void> onInit() async {
     super.onInit();
     accountTotalDevicesController.value = accountTotalDevices;
-    accountTotalSceneController.value = accountTotalActiveScene;
+    accountTotalSceneController.value = await FirebaseService().getTotalScene();
     accountTotalVoltageController.value =
         await FirebaseService().getAllDevicesVoltage(accountId);
   }
@@ -28,8 +28,8 @@ class HomePageController extends BaseController {
 
   Future<void> refreshPage() async {
     final deviceCount = await FirebaseService().getTotalDeviceCount(accountId);
-    final sceneCount =
-        await FirebaseService().getTotalActiveSceneCount(accountId);
+
+    final sceneCount = await FirebaseService().getTotalScene();
     accountTotalVoltageController.value =
         await FirebaseService().getAllDevicesVoltage(accountId);
     ValueService().changeTotalDevices(deviceCount);

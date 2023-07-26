@@ -35,7 +35,7 @@ class SignUpController extends BaseController {
             phoneFieldController.text,
             passwordFieldController.text,
           )
-          .then((value) => Get.offAndToNamed<Object>(Routes.signInPage));
+          .then((value) => Get.offAllNamed<Object>(Routes.signInPage));
     } on FirebaseAuthException catch (error) {
       showErrorSnackbar('Error', error.message.toString());
     }

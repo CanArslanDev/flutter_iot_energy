@@ -111,7 +111,7 @@ class SignUpPage extends GetView<SignUpController> {
       );
 
   Widget get registerText => GestureDetector(
-        onTap: () => Get.offAndToNamed<Object>(Routes.signInPage),
+        onTap: () => Get.offAllNamed<Object>(Routes.signInPage),
         child: Padding(
           padding: EdgeInsets.only(bottom: 12.8.w),
           child: RichText(

@@ -93,6 +93,8 @@ class FirebaseService {
       } catch (e) {
         await setDevicePower(id, 0);
       }
+      final charging = data['charging'];
+      final type = data['type'];
       final voltage = data['voltage'];
       final watt = data['watt'];
       final percentage = data['percentage'];
@@ -109,6 +111,8 @@ class FirebaseService {
         'ampere': ampere,
         'date': date,
         'power': power,
+        'type': type,
+        'charging': charging,
       };
     } else {
       return {};
@@ -254,6 +258,7 @@ class FirebaseService {
     String accountId,
     String deviceDataId,
     String deviceId,
+    String deviceName,
     int deviceType,
     int hour,
     int minute,
@@ -273,7 +278,10 @@ class FirebaseService {
       'day': day,
       'plan': plan,
       'enable': true,
-      'timestamp': DateTime.now()
+      'timestamp': DateTime.now(),
+      'sceneName': 'Scene',
+      'fromDevice': deviceName,
+      'fromDeviceId': deviceId,
     };
     final listRealtimeDatabase = {
       'deviceType': deviceType,
@@ -414,5 +422,28 @@ class FirebaseService {
     await sceneRealtimeRef.child(sceneId).remove();
     await setDeviceDecreaseSceneCount(deviceId);
     await setDeviceSceneList(deviceId, sceneId, false);
+  }
+
+  Future<int> getTotalScene() async {
+    var value = 0;
+    final snapshot = await FirebaseFirestore.instance
+        .collection('users')
+        .doc(accountId)
+        .collection('devices')
+        .get();
+    final devicesAll = snapshot.docs.map((doc) => doc.id).toList();
+    for (final deviceId in devicesAll) {
+      final scenesSnapshot = await FirebaseFirestore.instance
+          .collection('users')
+          .doc(accountId)
+          .collection('devices')
+          .doc(deviceId)
+          .collection('scenes')
+          .get();
+      scenesSnapshot.docs.map((doc) {
+        value++;
+      }).toList();
+    }
+    return value;
   }
 }

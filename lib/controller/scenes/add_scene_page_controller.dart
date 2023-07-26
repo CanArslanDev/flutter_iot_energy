@@ -26,6 +26,7 @@ class AddScenePageController extends BaseController {
       accountId,
       controller.deviceDataId,
       controller.deviceId,
+      controller.deviceName,
       controller.deviceType,
       hour.value,
       minute.value,

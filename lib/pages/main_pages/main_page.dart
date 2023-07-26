@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_iot_energy/controller/home_page_controller.dart';
+import 'package:flutter_iot_energy/controller/search_page_controller.dart';
 import 'package:flutter_iot_energy/pages/main_pages/account_page.dart';
 import 'package:flutter_iot_energy/pages/main_pages/home_page.dart';
 import 'package:flutter_iot_energy/pages/main_pages/search_page.dart';
@@ -20,9 +22,18 @@ class _MainPageState extends State<MainPage> {
     const HomePage(),
     const SearchPage(),
     const AccountPage(),
-    const AccountPage(),
-    const AccountPage(),
   ];
+
+  void tabChange(int index) {
+    if (index == 0 || index == 2) {
+      Get.delete<SearchPageController>();
+    } else if (index == 1 || index == 2) {
+      Get.delete<HomePageController>();
+    }
+    setState(() {
+      _selectedIndex = index;
+    });
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -79,20 +90,12 @@ class _MainPageState extends State<MainPage> {
                       text: 'Search',
                     ),
                     GButton(
-                      icon: FontAwesomeIcons.heart,
-                      text: 'Likes',
-                    ),
-                    GButton(
                       icon: FontAwesomeIcons.user,
-                      text: 'Profile',
+                      text: 'Account',
                     ),
                   ],
                   selectedIndex: _selectedIndex,
-                  onTabChange: (index) {
-                    setState(() {
-                      _selectedIndex = index;
-                    });
-                  },
+                  onTabChange: tabChange,
                 ),
               ),
             ),
