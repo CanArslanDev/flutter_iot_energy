@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_iot_energy/controller/scenes/add_scene_page_controller.dart';
 import 'package:flutter_iot_energy/ui/text_style.dart';
 import 'package:flutter_time_picker_spinner/flutter_time_picker_spinner.dart';
+import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:get/get.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:gradient_borders/box_borders/gradient_box_border.dart';
@@ -26,6 +27,7 @@ class AddScenePage extends GetView<AddScenePageController> {
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 title,
+                selectPlanTitle,
                 selectPlan(),
                 repentitionTimeTitle,
                 selectDay(),
@@ -231,8 +233,18 @@ class AddScenePage extends GetView<AddScenePageController> {
   }
 
   Widget get title => Padding(
-        padding: EdgeInsets.only(top: 3.w),
-        child: Text('Add Scenes', style: pageTitleTextStyle),
+        padding: EdgeInsets.only(top: 3.w, right: 4.w),
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            Text('Add Scene', style: pageTitleTextStyle),
+            Text(
+                '''You can automatically set your devices power off and on states by creating a scene.''',
+                style: pageTitleTextStyle.copyWith(
+                    fontSize: 4.w,
+                    color: Theme.of(Get.context!).colorScheme.onTertiary))
+          ],
+        ),
       );
   Decoration get backgroundDecoration => const BoxDecoration(
         image: DecorationImage(
@@ -244,6 +256,14 @@ class AddScenePage extends GetView<AddScenePageController> {
         padding: EdgeInsets.only(top: 8.w),
         child: Text(
           'Repentition Time',
+          style: pageTitleTextStyle.copyWith(fontSize: 5.w),
+        ),
+      );
+
+  Widget get selectPlanTitle => Padding(
+        padding: EdgeInsets.only(top: 4.w),
+        child: Text(
+          'Select Plan',
           style: pageTitleTextStyle.copyWith(fontSize: 5.w),
         ),
       );

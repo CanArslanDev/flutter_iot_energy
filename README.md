@@ -4,8 +4,7 @@ A new Flutter project.
 
 ## Getting Started
 Yapılacaklar
-- add scene information eklenecek
-- ana sayfaya eğer kullanıcıda o idle eşleşen cihaz zaten varsa tekrar ekleyemeyecek
+- device settings sayfası yapılacak
 - ana sayfada cihaz eklenince ana sayfada cihazlar bölümü otomatik güncellenmiyor, güncellenecek
 - scene page eğer scene yoksa add scene seçeneği çıkacak
 - arduniodan date set edilirken zamanlarda başa sıfır koyuyomu bak
@@ -15,4 +14,3 @@ Yapılacaklar
 - scenelere isim değiştirme özelliği eklenecek
 - device detail page son aktif olma eklenecek
 - device detaila bataryalar için şarj durumu eklenecek (Statusa eklenebilir)
-- Login Sign in safe area arka planın içine alınacak

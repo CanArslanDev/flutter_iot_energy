@@ -15,8 +15,16 @@ class PairDevicePageController extends BaseController {
     if (nameFieldController.text == '' || deviceFieldController.text == '') {
       return showErrorSnackbar('Error', 'Please fill in all fields');
     }
-    Get.closeAllSnackbars();
+
     findingDevice.value = true;
+    if (await FirebaseService()
+            .getAccountDeviceIsExists(deviceFieldController.text) ==
+        true) {
+      findingDevice.value = false;
+      return showErrorSnackbar(
+          'Error', '''This device is already in your account''');
+    }
+    Get.closeAllSnackbars();
     if (await FirebaseService().getDeviceFound(
           deviceFieldController.text,
           DeviceService().getTypeIntToString(buttonType.value),

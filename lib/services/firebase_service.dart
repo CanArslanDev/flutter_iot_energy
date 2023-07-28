@@ -328,6 +328,17 @@ class FirebaseService {
     return getCountdata?['totalSceneCount'] as int;
   }
 
+  Future<bool> getAccountDeviceIsExists(String deviceId) async {
+    final getCountCollection =
+        FirebaseFirestore.instance.collection('users/$accountId/devices');
+    final docSnapshot = await getCountCollection.doc(deviceId).get();
+    if (docSnapshot.exists) {
+      return true;
+    } else {
+      return false;
+    }
+  }
+
   Future<int> setDeviceIncreaseRecentlySceneCount(String deviceDataId) async {
     final getCountCollection =
         FirebaseFirestore.instance.collection('users/$accountId/devices');

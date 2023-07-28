@@ -15,11 +15,11 @@ class SignUpPage extends GetView<SignUpController> {
   Widget build(BuildContext context) {
     return Scaffold(
       resizeToAvoidBottomInset: false,
-      body: SafeArea(
-        child: Container(
-          height: 100.h,
-          width: 100.w,
-          decoration: backgroundDecoration,
+      body: Container(
+        height: 100.h,
+        width: 100.w,
+        decoration: backgroundDecoration,
+        child: SafeArea(
           child: Column(
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
