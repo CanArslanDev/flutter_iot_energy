@@ -14,3 +14,4 @@ Yapılacaklar
 - scenelere isim değiştirme özelliği eklenecek
 - device detail page son aktif olma eklenecek
 - device detaila bataryalar için şarj durumu eklenecek (Statusa eklenebilir)
+- sceneler için farklı bir kişi başka bir kişide bulunan aynı cihazı eklediyse önceden eklenmiş sceneler yeni kişide gözükmediği için yeni cihaz eklenince eski sceneler silinsin
