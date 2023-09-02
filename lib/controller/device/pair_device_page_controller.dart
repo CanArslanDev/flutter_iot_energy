@@ -22,7 +22,9 @@ class PairDevicePageController extends BaseController {
         true) {
       findingDevice.value = false;
       return showErrorSnackbar(
-          'Error', '''This device is already in your account''');
+        'Error',
+        '''This device is already in your account''',
+      );
     }
     Get.closeAllSnackbars();
     if (await FirebaseService().getDeviceFound(

@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter_iot_energy/controller/scenes/add_scene_page_controller.dart';
 import 'package:flutter_iot_energy/ui/text_style.dart';
 import 'package:flutter_time_picker_spinner/flutter_time_picker_spinner.dart';
-import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:get/get.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:gradient_borders/box_borders/gradient_box_border.dart';
@@ -123,7 +122,7 @@ class AddScenePage extends GetView<AddScenePageController> {
                   ),
                 ),
               ),
-            )
+            ),
           ],
         ),
       );
@@ -239,10 +238,12 @@ class AddScenePage extends GetView<AddScenePageController> {
           children: [
             Text('Add Scene', style: pageTitleTextStyle),
             Text(
-                '''You can automatically set your devices power off and on states by creating a scene.''',
-                style: pageTitleTextStyle.copyWith(
-                    fontSize: 4.w,
-                    color: Theme.of(Get.context!).colorScheme.onTertiary))
+              '''You can automatically set your devices power off and on states by creating a scene.''',
+              style: pageTitleTextStyle.copyWith(
+                fontSize: 4.w,
+                color: Theme.of(Get.context!).colorScheme.onTertiary,
+              ),
+            ),
           ],
         ),
       );

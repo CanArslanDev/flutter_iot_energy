@@ -1,6 +1,7 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_iot_energy/controller/home_page_controller.dart';
 import 'package:flutter_iot_energy/routes/routes.dart';
 import 'package:flutter_iot_energy/services/device_service.dart';
 import 'package:flutter_iot_energy/services/firebase_service.dart';
@@ -12,99 +13,90 @@ import 'package:gradient_borders/box_borders/gradient_box_border.dart';
 import 'package:responsive_sizer/responsive_sizer.dart';
 
 ///Home Page Device Builder
-class BuilderHomePageDevice extends StatefulWidget {
-  ///HomePage Super Key
+class BuilderHomePageDevice extends GetView<HomePageController> {
   const BuilderHomePageDevice({super.key});
 
   @override
-  State<BuilderHomePageDevice> createState() => _BuilderHomePageDeviceState();
-}
-
-class _BuilderHomePageDeviceState extends State<BuilderHomePageDevice> {
-  bool widgetAlignment = false;
-  @override
   Widget build(BuildContext context) {
-    return StreamBuilder<QuerySnapshot>(
-      stream: FirebaseFirestore.instance
-          .collection('users/$accountId/devices')
-          .snapshots(),
-      builder: (context, snapshot) {
-        if (!snapshot.hasData) {
-          return const Center(
-            child: CircularProgressIndicator(),
-          );
-        } else {
-          return Align(
-            alignment: snapshot.data!.docs.length == 1
-                ? Alignment.centerLeft
-                : Alignment.center,
-            child: Wrap(
-              children: snapshot.data!.docs.map((doc) {
-                final alignment = widgetAlignment;
-                widgetAlignment = !widgetAlignment;
-                return FutureBuilder(
-                  // future: Future.wait([
-                  //   FirebaseService().getDeviceVoltage(doc['deviceId']),
-                  //   FirebaseService().getDeviceWatt(doc['deviceId']),
-                  //   FirebaseService().getDeviceAmpere(doc['deviceId']),
-                  //   FirebaseService()
-                  //       .getDeviceChargePercentage(doc['deviceId']),
-                  //   FirebaseService().getDeviceActive(doc['deviceId']),
-                  // ]),
-                  future: FirebaseService()
-                      .getDeviceAllData(doc['deviceId'] as String),
-                  builder:
-                      (context, AsyncSnapshot<Map<String, dynamic>> snapshot) {
-                    if (snapshot.hasData) {
-                      var voltage = snapshot.data!['voltage'] as double;
-                      voltage = double.parse(voltage.toStringAsFixed(2));
-                      final watt = snapshot.data!['watt'] as int;
-                      final ampere = snapshot.data!['ampere'] as int;
-                      final percentage = snapshot.data!['percentage'] as int;
-                      final power = snapshot.data!['power'] as bool;
-                      final date = snapshot.data!['date'] as bool;
-                      final charging = snapshot.data!['charging'] as bool;
-                      final type = snapshot.data!['type'] as String;
-                      // final date = snapshot.data!['date'].toString() == 'true
-                      //     ? true
-                      //     : false;
-                      return buildBox(
-                          doc['deviceId'] as String,
-                          doc['deviceName'] as String,
-                          doc.id,
-                          doc['deviceType'] as int,
-                          alignment
-                              ? Alignment.centerRight
-                              : Alignment.centerLeft,
-                          doc['deviceName'] as String,
-                          'IOT Device',
-                          voltage,
-                          watt,
-                          ampere,
-                          percentage,
-                          DeviceService().getIfRechargable(type, charging),
-                          [date, power],
-                          // power
-                          //     ? date
-                          //         ? power
-                          //         : date
-                          //     : power,
+    return Obx(() => StreamBuilder<QuerySnapshot>(
+          stream: FirebaseFirestore.instance
+              .collection(controller.builderPath.value)
+              .snapshots(),
+          builder: (context, snapshot) {
+            if (!snapshot.hasData) {
+              return const Center(
+                child: CircularProgressIndicator(),
+              );
+            } else {
+              return Align(
+                alignment: snapshot.data!.docs.length == 1
+                    ? Alignment.centerLeft
+                    : Alignment.center,
+                child: Wrap(
+                  children: snapshot.data!.docs.map((doc) {
+                    final alignment = controller.builderWidgetAlignment.value;
+                    controller.builderWidgetAlignment.value =
+                        !controller.builderWidgetAlignment.value;
+                    return FutureBuilder(
+                      future: FirebaseService()
+                          .getDeviceAllData(doc['deviceId'] as String),
+                      builder: (context,
+                          AsyncSnapshot<Map<String, dynamic>> snapshot) {
+                        if (snapshot.hasData) {
+                          var voltage = snapshot.data!['voltage'] as double;
+                          voltage = double.parse(voltage.toStringAsFixed(2));
+                          final watt = snapshot.data!['watt'] as int;
+                          final ampere = snapshot.data!['ampere'] as int;
+                          final percentage =
+                              snapshot.data!['percentage'] as int;
+                          final power = snapshot.data!['power'] as bool;
+                          final date = snapshot.data!['date'] as bool;
+                          final charging = snapshot.data!['charging'] as bool;
+                          final type = snapshot.data!['type'] as String;
+                          // final date = snapshot.data!['date'].toString() == true
+                          //     ? true
+                          //     : false;
+                          if (controller.moduleFilter.value != '' &&
+                              controller.moduleFilter.value !=
+                                  snapshot.data!['module_id']) {
+                            return const SizedBox();
+                          }
+                          return buildBox(
+                              doc['deviceId'] as String,
+                              doc['deviceName'] as String,
+                              doc.id,
+                              doc['deviceType'] as int,
+                              alignment
+                                  ? Alignment.centerRight
+                                  : Alignment.centerLeft,
+                              doc['deviceName'] as String,
+                              'IOT Device',
+                              voltage,
+                              watt,
+                              ampere,
+                              percentage,
+                              DeviceService().getIfRechargable(type, charging),
+                              [date, power],
+                              // power
+                              //     ? date
+                              //         ? power
+                              //         : date
+                              //     : power,
 
-                          () {
-                        widgetAlignment = false;
-                        setState(() {});
-                      });
-                    } else {
-                      return Container();
-                    }
-                  },
-                );
-              }).toList(),
-            ),
-          );
-        }
-      },
-    );
+                              () {
+                            controller.builderWidgetAlignment.value = false;
+                          });
+                        } else {
+                          return Container();
+                        }
+                      },
+                    );
+                  }).toList(),
+                ),
+              );
+            }
+          },
+        ));
     // return SizedBox(
     //   width: 100.w,
     //   child: Wrap(
@@ -336,7 +328,7 @@ class _BuilderHomePageDeviceState extends State<BuilderHomePageDevice> {
                                         ),
                                       ),
                           ),
-                        )
+                        ),
                       ],
                     ),
                     SizedBox(
@@ -346,7 +338,8 @@ class _BuilderHomePageDeviceState extends State<BuilderHomePageDevice> {
                         scale: 0.9,
                         child: CupertinoSwitch(
                           value: status[1],
-                          activeColor: Theme.of(context).colorScheme.tertiary,
+                          activeColor:
+                              Theme.of(Get.context!).colorScheme.tertiary,
                           onChanged: (value) async {
                             if (status[0] == true) {
                               await FirebaseService()
@@ -364,7 +357,7 @@ class _BuilderHomePageDeviceState extends State<BuilderHomePageDevice> {
                     ),
                   ],
                 ),
-              )
+              ),
             ],
           ),
         ),

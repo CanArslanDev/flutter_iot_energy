@@ -31,6 +31,15 @@ class FirebaseService {
     }
   }
 
+  Future<void> setDeviceCharging(String id, int charging) async {
+    final deviceRef = FirebaseDatabase.instance.ref().child('devices/$id');
+    if (charging == -1) {
+      await deviceRef.update({'charging': false});
+    } else {
+      await deviceRef.update({'charging': true});
+    }
+  }
+
   ///Get Device Total Device Count Value From Firebase
   Future<int> getTotalDeviceCount(String accountId) async {
     final collectionuser = _firestore.collection('users');
@@ -72,6 +81,61 @@ class FirebaseService {
     await collectionuser
         .doc(accountId)
         .update({'totalDeviceCount': accountTotalDevices + 1});
+    await setAccountModuleList(
+      value: await getDeviceModuleId(deviceId),
+      add: true,
+    );
+    // await collectionuser
+    //     .doc(accountId)
+    //     .update({'totalDeviceCount': accountTotalDevices + 1});
+  }
+
+  Future<List<String>> getAccountModuleList() async {
+    final collectionuser =
+        FirebaseFirestore.instance.collection('users').doc(accountId);
+    final docSnapshotuser = await collectionuser.get();
+    final doc = docSnapshotuser.data();
+    if (doc!['moduleList'] != null) {
+      return List<String>.from(doc['moduleList'] as List);
+    }
+    return [];
+  }
+
+  Future<void> setAccountModuleList({
+    required String value,
+    required bool add,
+  }) async {
+    final collectionuser =
+        FirebaseFirestore.instance.collection('users').doc(accountId);
+    final docSnapshotuser = await collectionuser.get();
+    final doc = docSnapshotuser.data();
+    if (doc!['moduleList'] != null) {
+      if (add == true) {
+        final moduleList = doc['moduleList'] as List;
+        if (moduleList.contains(value)) {
+          return;
+        }
+        moduleList.add(value);
+        await collectionuser.update({'moduleList': moduleList});
+      } else {
+        final moduleList = doc['moduleList'] as List..remove(value);
+
+        await collectionuser.update({'moduleList': moduleList});
+      }
+    } else {
+      if (add == true) {
+        final moduleList = [value];
+
+        await collectionuser.update({'moduleList': moduleList});
+      }
+    }
+
+    // final docSnapshot = await docRef.get();
+    // final List<String> moduleList =
+    //     List<String>.from(docSnapshot.data!['moduleList']);
+    // moduleList.add(value);
+
+    // await docRef.update({'moduleList': moduleList});
   }
 
   Future<Map<String, dynamic>> getDeviceAllData(String id) async {
@@ -99,6 +163,7 @@ class FirebaseService {
       final watt = data['watt'];
       final percentage = data['percentage'];
       final ampere = data['ampere'];
+      final moduleId = data['module_id'];
       final date = DeviceService().calculateOnlineDevice(
         DateTime.parse(data['date'] as String),
         DateTime.now(),
@@ -113,6 +178,7 @@ class FirebaseService {
         'power': power,
         'type': type,
         'charging': charging,
+        'module_id': moduleId,
       };
     } else {
       return {};
@@ -174,6 +240,18 @@ class FirebaseService {
       return double.parse(snapshot.value.toString());
     } else {
       return 0;
+    }
+  }
+
+  Future<String> getDeviceModuleId(
+    String id,
+  ) async {
+    final ref = FirebaseDatabase.instance.ref();
+    final snapshot = await ref.child('devices/$id/module_id').get();
+    if (snapshot.exists) {
+      return snapshot.value.toString();
+    } else {
+      return '';
     }
   }
 
@@ -271,18 +349,6 @@ class FirebaseService {
         await setDeviceIncreaseRecentlySceneCount(deviceDataId);
 //set list
 
-    final listDatabase = {
-      'deviceType': deviceType,
-      'hour': hour,
-      'minute': minute,
-      'day': day,
-      'plan': plan,
-      'enable': true,
-      'timestamp': DateTime.now(),
-      'sceneName': 'Scene',
-      'fromDevice': deviceName,
-      'fromDeviceId': deviceId,
-    };
     final listRealtimeDatabase = {
       'deviceType': deviceType,
       'hour': hour,
@@ -292,12 +358,6 @@ class FirebaseService {
       'enable': true,
       'timestamp': DateTime.now().toString(),
     };
-
-//set scene firestore database
-    final sceneRef = FirebaseFirestore.instance
-        .collection('users/$accountId/devices/$deviceDataId/scenes')
-        .doc('scene_$recentlySceneCount');
-    await sceneRef.set(listDatabase);
 
 // set scene realtime database
     final sceneRealtimeRef = FirebaseDatabase.instance
@@ -321,11 +381,67 @@ class FirebaseService {
   }
 
   Future<int> getDeviceTotalSceneCount(String deviceDataId) async {
-    final getCountCollection =
-        FirebaseFirestore.instance.collection('users/$accountId/devices');
-    final docSnapshot = await getCountCollection.doc(deviceDataId).get();
-    final getCountdata = docSnapshot.data();
-    return getCountdata?['totalSceneCount'] as int;
+    final c =
+        (await FirebaseService().getDeviceSceneList(deviceDataId)).split(',');
+    return c.length - 1;
+  }
+
+  Future<String> getDeviceSceneList(String deviceDataId) async {
+    final ref = FirebaseDatabase.instance.ref();
+    final snapshot = await ref.child('devices/$deviceDataId/sceneList').get();
+    if (snapshot.exists) {
+      return snapshot.value.toString();
+    } else {
+      return '';
+    }
+  }
+
+  Future<Map<String, dynamic>> getDeviceScene(
+    String deviceDataId,
+    String scene,
+  ) async {
+    final reference = FirebaseDatabase.instance
+        .ref()
+        .child('devices/$deviceDataId')
+        .child(scene);
+
+    final event = await reference.once();
+    final snapshot = event.snapshot;
+
+    if (snapshot.value != null) {
+      final data = snapshot.value! as Map;
+      final day = data['day'];
+      final deviceType = data['deviceType'];
+      final enable = data['enable'];
+      final hour = data['hour'];
+      final minute = data['minute'];
+      final plan = data['plan'];
+      final timestamp = data['timestamp'];
+
+      return {
+        'sceneId': scene,
+        'day': day,
+        'deviceType': deviceType,
+        'enable': enable,
+        'hour': hour,
+        'minute': minute,
+        'plan': plan,
+        'timestamp': timestamp,
+      };
+    } else {
+      return {};
+    }
+  }
+
+  Future<List<Map<String, dynamic>>> getDeviceSceneAllList(
+    String deviceId,
+  ) async {
+    final devices = <Map<String, dynamic>>[];
+    final c = (await FirebaseService().getDeviceSceneList(deviceId)).split(',');
+    for (var i = 0; i < c.length - 1; i++) {
+      devices.add(await FirebaseService().getDeviceScene(deviceId, c[i]));
+    }
+    return devices;
   }
 
   Future<bool> getAccountDeviceIsExists(String deviceId) async {
@@ -368,13 +484,9 @@ class FirebaseService {
     String sceneId,
     dynamic value,
   ) async {
-    final sceneRef = FirebaseFirestore.instance
-        .collection('users/$accountId/devices/$deviceId/scenes/')
-        .doc(sceneId);
     final sceneRealtimeRef =
         FirebaseDatabase.instance.ref().child('devices/$deviceId/$sceneId');
     await sceneRealtimeRef.update({'enable': value});
-    await sceneRef.update({'enable': value});
   }
 
   Future<void> setDeviceSceneClockValue(
@@ -383,13 +495,9 @@ class FirebaseService {
     int hour,
     int minute,
   ) async {
-    final sceneRef = FirebaseFirestore.instance
-        .collection('users/$accountId/devices/$deviceId/scenes/')
-        .doc(sceneId);
     final sceneRealtimeRef =
         FirebaseDatabase.instance.ref().child('devices/$deviceId/$sceneId');
     await sceneRealtimeRef.update({'hour': hour, 'minute': minute});
-    await sceneRef.update({'hour': hour, 'minute': minute});
   }
 
   Future<void> setDeviceScenePlanValue(
@@ -397,37 +505,17 @@ class FirebaseService {
     String sceneId,
     int value,
   ) async {
-    final sceneRef = FirebaseFirestore.instance
-        .collection('users/$accountId/devices/$deviceId/scenes/')
-        .doc(sceneId);
     final sceneRealtimeRef =
         FirebaseDatabase.instance.ref().child('devices/$deviceId/$sceneId');
     await sceneRealtimeRef.update({
       'plan': value,
     });
-    await sceneRef.update({
-      'plan': value,
-    });
-  }
-
-  Future<Map<String, dynamic>?> getDeviceScene(
-    String deviceId,
-    String sceneId,
-  ) async {
-    final sceneRef = FirebaseFirestore.instance
-        .collection('users/$accountId/devices/$deviceId/scenes/');
-    final sceneRefSnapshot = await sceneRef.doc(sceneId).get();
-    return sceneRefSnapshot.data();
   }
 
   Future<void> deleteDeviceScene(
     String deviceId,
     String sceneId,
   ) async {
-    final sceneRef = FirebaseFirestore.instance
-        .collection('users/$accountId/devices/$deviceId/scenes/');
-    await sceneRef.doc(sceneId).delete();
-
     final sceneRealtimeRef =
         FirebaseDatabase.instance.ref().child('devices/$deviceId');
     await sceneRealtimeRef.child(sceneId).remove();
@@ -444,16 +532,19 @@ class FirebaseService {
         .get();
     final devicesAll = snapshot.docs.map((doc) => doc.id).toList();
     for (final deviceId in devicesAll) {
-      final scenesSnapshot = await FirebaseFirestore.instance
-          .collection('users')
-          .doc(accountId)
-          .collection('devices')
-          .doc(deviceId)
-          .collection('scenes')
-          .get();
-      scenesSnapshot.docs.map((doc) {
-        value++;
-      }).toList();
+      final c =
+          (await FirebaseService().getDeviceSceneList(deviceId)).split(',');
+      value += c.length - 1;
+      // final scenesSnapshot = await FirebaseFirestore.instance
+      //     .collection('users')
+      //     .doc(accountId)
+      //     .collection('devices')
+      //     .doc(deviceId)
+      //     .collection('scenes')
+      //     .get();
+      // scenesSnapshot.docs.map((doc) {
+      //   value++;
+      // }).toList();
     }
     return value;
   }

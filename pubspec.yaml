@@ -24,6 +24,8 @@ dependencies:
   flutter: 
     sdk: flutter
   flutter_time_picker_spinner: ^2.0.0
+  auto_size_text: ^3.0.0
+  flutter_svg: ^2.0.7
 dev_dependencies: 
   flutter_launcher_icons: ^0.13.1
   pubspec_dependency_sorter: ^1.0.3
@@ -42,4 +44,5 @@ flutter_launcher_icons:
 flutter: 
   assets: 
     - assets/images/
+    - assets/icons/
   uses-material-design: true

@@ -1,4 +1,3 @@
-import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_iot_energy/controller/scenes/edit_scene_page_controller.dart';
@@ -17,8 +16,7 @@ class EditScenePage extends GetView<EditScenePageController> {
       controller.initializeId(
         ((Get.arguments as List)[0] as Object) as String,
         ((Get.arguments as List)[1] as Object) as String,
-        ((Get.arguments as List)[2] as Object)
-            as QueryDocumentSnapshot<Object?>,
+        ((Get.arguments as List)[2] as Object) as Map<String, dynamic>,
       );
     }
     return Scaffold(
@@ -245,7 +243,7 @@ class EditScenePage extends GetView<EditScenePageController> {
                               .onTertiary
                               .withOpacity(0.8),
                         ),
-                      )
+                      ),
                     ],
                   ),
                   AnimatedSize(
@@ -280,12 +278,12 @@ class EditScenePage extends GetView<EditScenePageController> {
                                   ),
                                 ),
                               ),
-                            )
+                            ),
                         ],
                       ),
                     ),
                   ),
-                  divider
+                  divider,
                 ],
               ),
             ),
@@ -333,7 +331,7 @@ class EditScenePage extends GetView<EditScenePageController> {
                               .onTertiary
                               .withOpacity(0.8),
                         ),
-                      )
+                      ),
                     ],
                   ),
                   AnimatedSize(
@@ -379,7 +377,7 @@ class EditScenePage extends GetView<EditScenePageController> {
                       ),
                     ),
                   ),
-                  divider
+                  divider,
                 ],
               ),
             ),
@@ -419,7 +417,7 @@ class EditScenePage extends GetView<EditScenePageController> {
                       ),
                     ),
                   ),
-                )
+                ),
               ],
             ),
             ColoredBox(
@@ -432,7 +430,7 @@ class EditScenePage extends GetView<EditScenePageController> {
                 ),
               ),
             ),
-            divider
+            divider,
           ],
         ),
       );

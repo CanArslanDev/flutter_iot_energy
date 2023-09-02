@@ -10,7 +10,10 @@ class HomePageController extends BaseController {
   Rx<int> accountTotalDevicesController = 0.obs;
   Rx<int> accountTotalSceneController = 0.obs;
   Rx<int> accountTotalVoltageController = (-1).obs;
-
+  Rx<bool> builderWidgetAlignment = false.obs;
+  RxList<String> accountModuleList = RxList();
+  Rx<String> moduleFilter = ''.obs;
+  Rx<String> builderPath = 'users/$accountId/devices'.obs;
   @override
   Future<void> onInit() async {
     super.onInit();
@@ -18,6 +21,7 @@ class HomePageController extends BaseController {
     accountTotalSceneController.value = await FirebaseService().getTotalScene();
     accountTotalVoltageController.value =
         await FirebaseService().getAllDevicesVoltage(accountId);
+    accountModuleList.value = await FirebaseService().getAccountModuleList();
   }
 
   void navigatePairPage() {
@@ -26,9 +30,17 @@ class HomePageController extends BaseController {
     );
   }
 
+  void setModuleFilter(String value) {
+    builderPath
+      ..value = ''
+      ..value = 'users/$accountId/devices';
+    moduleFilter.value = value;
+  }
+
   Future<void> refreshPage() async {
     final deviceCount = await FirebaseService().getTotalDeviceCount(accountId);
 
+    accountModuleList.value = await FirebaseService().getAccountModuleList();
     final sceneCount = await FirebaseService().getTotalScene();
     accountTotalVoltageController.value =
         await FirebaseService().getAllDevicesVoltage(accountId);

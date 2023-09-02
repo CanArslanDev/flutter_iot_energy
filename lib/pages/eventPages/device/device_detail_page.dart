@@ -1,6 +1,8 @@
+import 'package:auto_size_text/auto_size_text.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_iot_energy/controller/device/device_detail_page_controller.dart';
+import 'package:flutter_iot_energy/services/device_service.dart';
 import 'package:get/get.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:gradient_borders/box_borders/gradient_box_border.dart';
@@ -29,7 +31,8 @@ class DeviceDetailPage extends GetView<DeviceDetailPageController> {
             child: Column(
               children: [
                 appbar(
-                  'Plug',
+                  DeviceService().capitalize(DeviceService()
+                      .getTypeIntToString(controller.deviceType)),
                 ),
                 topBody,
                 plugIcon,
@@ -240,7 +243,7 @@ class DeviceDetailPage extends GetView<DeviceDetailPageController> {
                                                 const LinearGradient(
                                               colors: [
                                                 Colors.blue,
-                                                Colors.pink
+                                                Colors.pink,
                                               ],
                                             ).createShader(
                                               Rect.fromLTWH(
@@ -309,7 +312,7 @@ class DeviceDetailPage extends GetView<DeviceDetailPageController> {
                       ),
                     ),
                   ),
-                )
+                ),
               ],
             ),
           ),
@@ -322,7 +325,7 @@ class DeviceDetailPage extends GetView<DeviceDetailPageController> {
     return Padding(
       padding: EdgeInsets.only(top: 6.5.w),
       child: GestureDetector(
-        onTap: () => controller.changePowerStatus(),
+        onTap: () => controller.changeChargingStatus(),
         child: Obx(
           () => Stack(
             children: [
@@ -333,7 +336,7 @@ class DeviceDetailPage extends GetView<DeviceDetailPageController> {
               AnimatedOpacity(
                 duration: const Duration(seconds: 2),
                 curve: Curves.fastLinearToSlowEaseIn,
-                opacity: (controller.power.value == false) ? 1 : 0,
+                opacity: (controller.charging.value == false) ? 1 : 0,
                 child: Image.asset(
                   'assets/images/device_plug_deactive.png',
                   width: 60.w,
@@ -374,31 +377,29 @@ class DeviceDetailPage extends GetView<DeviceDetailPageController> {
                 mainAxisAlignment: MainAxisAlignment.center,
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  RichText(
-                    text: TextSpan(
-                      children: <TextSpan>[
-                        TextSpan(
-                          text: '$title\n',
-                          style: GoogleFonts.inter(
-                            height: 1,
-                            color: Theme.of(Get.context!)
-                                .colorScheme
-                                .onTertiary
-                                .withOpacity(0.7),
-                            fontWeight: FontWeight.w900,
-                            fontSize: 3.7.w,
-                          ),
-                        ),
-                        TextSpan(
-                          text: state,
-                          style: GoogleFonts.inter(
-                            height: 1,
-                            color: color,
-                            fontWeight: FontWeight.bold,
-                            fontSize: 5.5.w,
-                          ),
-                        ),
-                      ],
+                  Text(
+                    '$title\n',
+                    style: GoogleFonts.inter(
+                      height: 0.7,
+                      color: Theme.of(Get.context!)
+                          .colorScheme
+                          .onTertiary
+                          .withOpacity(0.7),
+                      fontWeight: FontWeight.w900,
+                      fontSize: 3.7.w,
+                    ),
+                  ),
+                  SizedBox(
+                    width: 22.w,
+                    child: AutoSizeText(
+                      state,
+                      maxLines: 1,
+                      style: GoogleFonts.inter(
+                        height: 0.7,
+                        color: color,
+                        fontWeight: FontWeight.bold,
+                        fontSize: 5.5.w,
+                      ),
                     ),
                   ),
                 ],
@@ -453,23 +454,29 @@ class DeviceDetailPage extends GetView<DeviceDetailPageController> {
           Row(
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
-              buttonWidget(
-                Text(
-                  String.fromCharCode(CupertinoIcons.power.codePoint),
-                  style: TextStyle(
-                    inherit: false,
-                    color: Theme.of(Get.context!).colorScheme.tertiary,
-                    fontSize: 9.w,
-                    fontWeight: FontWeight.w900,
-                    fontFamily:
-                        CupertinoIcons.exclamationmark_circle.fontFamily,
-                    package: CupertinoIcons.exclamationmark_circle.fontPackage,
-                  ),
-                ),
-                'Status',
-                'Active',
-                Theme.of(Get.context!).colorScheme.tertiary,
-              ),
+              Obx(() => buttonWidget(
+                    Text(
+                      String.fromCharCode(CupertinoIcons.power.codePoint),
+                      style: TextStyle(
+                        inherit: false,
+                        color: Theme.of(Get.context!).colorScheme.tertiary,
+                        fontSize: 9.w,
+                        fontWeight: FontWeight.w900,
+                        fontFamily:
+                            CupertinoIcons.exclamationmark_circle.fontFamily,
+                        package:
+                            CupertinoIcons.exclamationmark_circle.fontPackage,
+                      ),
+                    ),
+                    'Status',
+                    controller.power.value ? 'Active' : 'Deactive',
+                    controller.power.value
+                        ? Theme.of(Get.context!).colorScheme.tertiary
+                        : Theme.of(Get.context!)
+                            .colorScheme
+                            .onTertiary
+                            .withOpacity(0.5),
+                  )),
               Obx(
                 () => buttonWidget(
                   Image.asset(
@@ -526,7 +533,7 @@ class DeviceDetailPage extends GetView<DeviceDetailPageController> {
                       ),
                     ),
                   ),
-                )
+                ),
               ],
             ),
           ),

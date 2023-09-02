@@ -290,7 +290,7 @@ class PairDevicePage extends GetView<PairDevicePageController> {
                     fontWeight: FontWeight.bold,
                   ),
                 ),
-              )
+              ),
             ],
           ),
         ),
@@ -391,7 +391,7 @@ class PairDevicePage extends GetView<PairDevicePageController> {
                       .withOpacity(0.08),
                   blurRadius: 10,
                   spreadRadius: 1,
-                )
+                ),
               ],
               border: GradientBoxBorder(
                 gradient: LinearGradient(
@@ -399,7 +399,10 @@ class PairDevicePage extends GetView<PairDevicePageController> {
                   end: Alignment.bottomCenter,
                   colors: [
                     Theme.of(Get.context!).colorScheme.primary,
-                    Theme.of(Get.context!).colorScheme.onTertiary.withOpacity(0)
+                    Theme.of(Get.context!)
+                        .colorScheme
+                        .onTertiary
+                        .withOpacity(0),
                   ],
                 ),
               ),

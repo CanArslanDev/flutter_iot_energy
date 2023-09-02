@@ -44,7 +44,7 @@ class SignInPage extends GetView<SignInController> {
                   googleButton,
                   registerText,
                 ],
-              )
+              ),
             ],
           ),
         ),
@@ -293,7 +293,7 @@ class SignInPage extends GetView<SignInController> {
                                               .colorScheme
                                               .background,
                                           size: 5.w,
-                                        )
+                                        ),
                                       ],
                                     )
                                   : Center(
@@ -311,10 +311,10 @@ class SignInPage extends GetView<SignInController> {
                                       ),
                                     ),
                             ),
-                          )
+                          ),
                         ],
                       ),
-                    )
+                    ),
                   ],
                 ),
               ),

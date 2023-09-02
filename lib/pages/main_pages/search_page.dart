@@ -88,7 +88,7 @@ class SearchPage extends GetView<SearchPageController> {
                   ),
                 ],
               ),
-            )
+            ),
             // Obx(() => BuilderSearchPageWidget(
             //     searchValue: controller.searchText.value)),
             // deviceWidget('Device 1', 25, 2, 50, 5, true, null),
@@ -217,9 +217,9 @@ class SearchPage extends GetView<SearchPageController> {
                                 : Theme.of(Get.context!).colorScheme.onTertiary,
                       ),
                     ),
-                  )
+                  ),
                 ],
-              )
+              ),
             ],
           ),
         ),
@@ -331,7 +331,7 @@ class SearchPage extends GetView<SearchPageController> {
                     ),
                   ),
                 ],
-              )
+              ),
             ],
           ),
         ),

@@ -47,7 +47,7 @@ class SignUpPage extends GetView<SignUpController> {
                 children: [
                   registerText,
                 ],
-              )
+              ),
             ],
           ),
         ),

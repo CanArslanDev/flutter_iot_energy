@@ -27,7 +27,7 @@ void dialogInformation(BuildContext context, String title, String description) {
                 end: Alignment.bottomCenter,
                 colors: [
                   Theme.of(context).colorScheme.primary,
-                  Theme.of(Get.context!).colorScheme.onBackground
+                  Theme.of(Get.context!).colorScheme.onBackground,
                 ],
               ),
             ),
@@ -67,7 +67,7 @@ void dialogInformation(BuildContext context, String title, String description) {
                             ),
                           ),
                         ),
-                      )
+                      ),
                     ],
                   ),
                 ),
@@ -94,7 +94,7 @@ void dialogInformation(BuildContext context, String title, String description) {
                       ),
                     ),
                   ),
-                )
+                ),
               ],
             ),
           ),

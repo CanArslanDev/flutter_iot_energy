@@ -3,7 +3,10 @@ import 'package:flutter/material.dart';
 import 'package:flutter_iot_energy/builders/home_page_device_builder.dart';
 import 'package:flutter_iot_energy/controller/home_page_controller.dart';
 import 'package:flutter_iot_energy/routes/routes.dart';
+import 'package:flutter_iot_energy/services/firebase_service.dart';
 import 'package:flutter_iot_energy/services/value_service.dart';
+import 'package:flutter_iot_energy/ui/text_style.dart';
+import 'package:flutter_svg/svg.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:get/get.dart';
 import 'package:google_fonts/google_fonts.dart';
@@ -113,7 +116,7 @@ class HomePage extends GetView<HomePageController> {
               ),
             ),
           ),
-        )
+        ),
       ],
     );
   }
@@ -163,25 +166,108 @@ class HomePage extends GetView<HomePageController> {
             ),
           ),
         ),
-        batteriesTitle,
+        Padding(
+          padding: EdgeInsets.only(top: 7.w, left: 3.w),
+          child: SizedBox(
+            height: 10.w,
+            width: Get.width,
+            child: ListView(
+              shrinkWrap: true,
+              scrollDirection: Axis.horizontal,
+              children: [batteriesTitle, moduleWidgetBuilder],
+            ),
+          ),
+        ),
         deviceBuilder,
       ],
     );
   }
 
+  Widget get moduleWidgetBuilder => Padding(
+        padding: EdgeInsets.only(left: 3.w),
+        child: Row(children: [
+          for (int i = 0; i < controller.accountModuleList.length; i++)
+            Padding(
+              padding: EdgeInsets.symmetric(horizontal: 1.w),
+              child: Obx(() => GestureDetector(
+                    onTap: () {
+                      if (controller.moduleFilter.value !=
+                          controller.accountModuleList[i]) {
+                        controller
+                            .setModuleFilter(controller.accountModuleList[i]);
+                      } else {
+                        controller.setModuleFilter('');
+                      }
+                    },
+                    child: Container(
+                      decoration: BoxDecoration(
+                        borderRadius: BorderRadius.circular(5),
+                        boxShadow: controller.moduleFilter.value !=
+                                controller.accountModuleList[i]
+                            ? null
+                            : [
+                                BoxShadow(
+                                    color: Theme.of(Get.context!)
+                                        .colorScheme
+                                        .primary
+                                        .withOpacity(0.5),
+                                    spreadRadius: 1,
+                                    blurRadius: 10)
+                              ],
+                        border: Border.all(
+                            color: Theme.of(Get.context!).colorScheme.primary,
+                            width: 0.5),
+                        color: controller.moduleFilter.value !=
+                                controller.accountModuleList[i]
+                            ? Colors.white
+                            : Theme.of(Get.context!).colorScheme.primary,
+                      ),
+                      child: Row(
+                        children: [
+                          SvgPicture.asset(
+                            'assets/icons/module_icon.svg',
+                            height: 7.w,
+                            width: 7.w,
+                            colorFilter: ColorFilter.mode(
+                              controller.moduleFilter.value !=
+                                      controller.accountModuleList[i]
+                                  ? Theme.of(Get.context!)
+                                      .colorScheme
+                                      .onTertiary
+                                  : Colors.white,
+                              BlendMode.srcIn,
+                            ),
+                          ),
+                          Padding(
+                            padding: EdgeInsets.only(left: 1.w, right: 2.w),
+                            child: Text((i + 1).toString(),
+                                style: pageTitleTextStyle.copyWith(
+                                    fontSize: 4.w,
+                                    color: controller.moduleFilter.value !=
+                                            controller.accountModuleList[i]
+                                        ? Theme.of(Get.context!)
+                                            .colorScheme
+                                            .onTertiary
+                                        : Colors.white)),
+                          ),
+                        ],
+                      ),
+                    ),
+                  )),
+            )
+        ]),
+      );
+
   Widget get deviceBuilder => const BuilderHomePageDevice();
 
-  Widget get batteriesTitle => Padding(
-        padding: EdgeInsets.only(top: 7.w, left: 3.w),
-        child: Align(
-          alignment: Alignment.centerLeft,
-          child: Text(
-            'Devices',
-            style: GoogleFonts.inter(
-              color: Theme.of(Get.context!).colorScheme.secondary,
-              fontWeight: FontWeight.bold,
-              fontSize: 7.w,
-            ),
+  Widget get batteriesTitle => Align(
+        alignment: Alignment.centerLeft,
+        child: Text(
+          'Devices',
+          style: GoogleFonts.inter(
+            color: Theme.of(Get.context!).colorScheme.secondary,
+            fontWeight: FontWeight.bold,
+            fontSize: 7.w,
           ),
         ),
       );

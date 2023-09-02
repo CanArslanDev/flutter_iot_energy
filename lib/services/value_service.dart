@@ -38,7 +38,6 @@ class ValueService {
     if (docSnapshotuser.exists) {
       final datauser = docSnapshotuser.data();
       accountTotalDevices = datauser?['totalDeviceCount'] as int;
-      accountTotalActiveScene = datauser?['totalActiveScene'] as int;
     }
     accountUsername = accountNameVoid;
     final username = accountNameVoid.split(' ');

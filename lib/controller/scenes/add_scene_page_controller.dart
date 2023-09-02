@@ -2,6 +2,7 @@
 
 import 'package:flutter_iot_energy/controller/base_controller.dart';
 import 'package:flutter_iot_energy/controller/device/device_detail_page_controller.dart';
+import 'package:flutter_iot_energy/controller/scenes/scene_page_controller.dart';
 import 'package:flutter_iot_energy/services/firebase_service.dart';
 import 'package:flutter_iot_energy/services/value_service.dart';
 import 'package:flutter_iot_energy/ui_alerts/get_snackbar.dart';
@@ -17,6 +18,12 @@ class AddScenePageController extends BaseController {
   void setClock(int voidHour, int voidMinute) {
     hour.value = voidHour;
     minute.value = voidMinute;
+  }
+
+  @override
+  void onClose() {
+    Get.put(ScenePageController()).refresh();
+    super.onClose();
   }
 
   Future<void> saveSceneButton() async {

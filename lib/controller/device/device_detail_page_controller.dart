@@ -29,6 +29,7 @@ class DeviceDetailPageController extends BaseController {
   Rx<bool> active = true.obs;
   Rx<bool> power = false.obs;
   Rx<int> watt = 0.obs;
+  Rx<bool> charging = false.obs;
   bool initialize = false;
   Rx<int> totalSceneCount = 1000.obs;
   int deviceType = 0;
@@ -52,9 +53,22 @@ class DeviceDetailPageController extends BaseController {
     streamListen();
   }
 
+  Future<void> changeChargingStatus() async {
+    if (active.value) {
+      await FirebaseService()
+          .setDeviceCharging(deviceId, !charging.value ? 0 : -1);
+    } else {
+      showErrorSnackbar(
+        'Unable to connect to your device',
+        'Please plug in your device.',
+      );
+    }
+  }
+
   Future<void> changePowerStatus() async {
     if (active.value) {
-      await FirebaseService().setDevicePower(deviceId, !power.value ? 0 : -1);
+      await FirebaseService()
+          .setDevicePower(deviceId, !power.value == true ? 0 : -1);
     } else {
       showErrorSnackbar(
         'Unable to connect to your device',
@@ -84,6 +98,7 @@ class DeviceDetailPageController extends BaseController {
         date.value = data['date'] as String;
         watt.value = data['watt'] as int;
         power.value = data['power'] as bool;
+        charging.value = data['charging'] as bool;
         active.value = DeviceService().calculateOnlineDevice(
           DateTime.parse(data['date'] as String),
           DateTime.now(),

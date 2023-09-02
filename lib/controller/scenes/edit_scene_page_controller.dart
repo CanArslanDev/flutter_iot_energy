@@ -1,7 +1,7 @@
 import 'dart:async';
 
-import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter_iot_energy/controller/base_controller.dart';
+import 'package:flutter_iot_energy/controller/scenes/scene_page_controller.dart';
 import 'package:flutter_iot_energy/services/firebase_service.dart';
 import 'package:flutter_iot_energy/ui_alerts/get_snackbar.dart';
 import 'package:get/get.dart';
@@ -21,10 +21,16 @@ class EditScenePageController extends BaseController {
 
   final firebase = FirebaseService();
 
+  @override
+  void onClose() {
+    Get.put(ScenePageController()).refresh();
+    super.onClose();
+  }
+
   void initializeId(
     String voidDeviceId,
     String voidSceneId,
-    QueryDocumentSnapshot<Object?> data,
+    Map<String, dynamic> data,
   ) {
     deviceId = voidDeviceId;
     sceneId = voidSceneId;
